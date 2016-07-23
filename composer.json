@@ -1,0 +1,33 @@
+{
+	"name"		: "dekuan/vdata",
+	"description"	: "VDATA protocol by DeKuan, Inc.",
+	"type"		: "library",
+	"license"	: "proprietary",
+	"authors"	:
+	[
+		{
+			"name": "XING",
+			"email": "liuqixing@dekuan.org"
+		}
+	],
+	"extra" :
+	{
+		"branch-alias" :
+		{
+			"dev-master" : "0.3.x-dev"
+		}
+	},
+	"require":
+	{
+		"php" : ">=5.3.0",
+		"symfony/http-kernel" : "2.7.*",
+	},
+	"autoload" :
+	{
+		"psr-4" : { "dekuan\\" : "src" }
+	},
+	"autoload-dev" :
+	{
+		"psr-4" : { "dekuan\\" : "src" }
+	}
+}
