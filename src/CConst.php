@@ -1,6 +1,6 @@
 <?php
 
-namespace dekuan\deconst;
+namespace dekuan\vdata;
 
 /**
  *      CConst

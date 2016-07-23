@@ -1,9 +1,10 @@
 <?php
 
-namespace dekuan\xsnetwork;
+namespace dekuan\vdata;
 
-use dekuan\deconst\CConst;
-use dekuan\xslib\CLib;
+use dekuan\vdata\CConst;
+use dekuan\delib\CLib;
+
 
 //
 //	CNetwork

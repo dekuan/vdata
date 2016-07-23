@@ -1,8 +1,8 @@
 <?php
 
-namespace dekuan\xsnetwork;
+namespace dekuan\vdata;
 
-use dekuan\deconst\CConst;
+use dekuan\vdata\CConst;
 use Symfony\Component\HttpFoundation\Response;
 
 
