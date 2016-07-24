@@ -16,7 +16,7 @@ class CNetwork
 
 	//	constants
 	const HTTP_X_FORWARDED_FOR			= 'X-Forwarded-For';
-	const HTTP_XSCN_FORWARDED_FOR			= 'XSCN-Forwarded-For';
+	const HTTP_VDATA_FORWARDED_FOR			= 'VDATA-Forwarded-For';
 
 	//	errors
 	const ERROR_SUCCESS				= CConst::ERROR_SUCCESS;
@@ -523,10 +523,10 @@ class CNetwork
 		$sServerAddr		= '';
 		$sXForwardedFor		= '';
 		$sRemoteAddr		= '';
-		$sXscnForwardedFor	= '';
+		$sVDATAForwardedFor	= '';
 
 		$sNewXForwardedFor	= '';
-		$sNewXscnForwardedFor	= '';
+		$sNewVDATAForwardedFor	= '';
 
 		$arrOptHttpHeader	= [];
 
@@ -546,10 +546,10 @@ class CNetwork
 						{
 							$sXForwardedFor	= trim( $_SERVER[ self::HTTP_X_FORWARDED_FOR ], "\r\n\t, " );
 						}
-						if ( array_key_exists( self::HTTP_XSCN_FORWARDED_FOR, $_SERVER ) &&
-							is_string( $_SERVER[ self::HTTP_XSCN_FORWARDED_FOR ] ) )
+						if ( array_key_exists( self::HTTP_VDATA_FORWARDED_FOR, $_SERVER ) &&
+							is_string( $_SERVER[ self::HTTP_VDATA_FORWARDED_FOR ] ) )
 						{
-							$sXscnForwardedFor = trim( $_SERVER[ self::HTTP_XSCN_FORWARDED_FOR ], "\r\n\t, " );
+							$sVDATAForwardedFor = trim( $_SERVER[ self::HTTP_VDATA_FORWARDED_FOR ], "\r\n\t, " );
 						}
 						if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) &&
 							is_string( $_SERVER[ 'REMOTE_ADDR' ] ) )
@@ -582,17 +582,17 @@ class CNetwork
 
 
 						//
-						//	HTTP_XSCN_FORWARDED_FOR
+						//	HTTP_VDATA_FORWARDED_FOR
 						//
-						if ( is_string( $sXscnForwardedFor ) && strlen( $sXscnForwardedFor ) > 0 )
+						if ( is_string( $sVDATAForwardedFor ) && strlen( $sVDATAForwardedFor ) > 0 )
 						{
-							$sNewXscnForwardedFor	= sprintf( "%s, %s", $sXscnForwardedFor, $sServerAddr );
-							$arrOptHttpHeader[ self::HTTP_XSCN_FORWARDED_FOR ]	= $sNewXscnForwardedFor;
+							$sNewVDATAForwardedFor	= sprintf( "%s, %s", $sVDATAForwardedFor, $sServerAddr );
+							$arrOptHttpHeader[ self::HTTP_VDATA_FORWARDED_FOR ]	= $sNewVDATAForwardedFor;
 						}
 						else if ( is_string( $sRemoteAddr ) && strlen( $sRemoteAddr ) > 0 )
 						{
-							$sNewXscnForwardedFor	= sprintf( "%s, %s", $sRemoteAddr, $sServerAddr );
-							$arrOptHttpHeader[ self::HTTP_XSCN_FORWARDED_FOR ]	= $sNewXscnForwardedFor;
+							$sNewVDATAForwardedFor	= sprintf( "%s, %s", $sRemoteAddr, $sServerAddr );
+							$arrOptHttpHeader[ self::HTTP_VDATA_FORWARDED_FOR ]	= $sNewVDATAForwardedFor;
 						}
 
 

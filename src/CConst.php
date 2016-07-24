@@ -34,8 +34,6 @@ class CConst
 	const SOURCE_IOS		= 2;	//	IOS
 	const SOURCE_WAP		= 3;	//	WAP
 	const SOURCE_PC			= 4;	//	PC
-	const SOURCE_DATAIMPORTER	= 5;	//	data importer / data.xs.cn
-	const SOURCE_NIRVANA		= 20;	//	for nirvana
 	const SOURCE_MGR_SYSTEM		= 30;	//	user from product management system / manage.xs.cn
 
 
@@ -118,8 +116,6 @@ class CConst
 				self::SOURCE_IOS == $nVal ||		//	IOS
 				self::SOURCE_WAP == $nVal ||		//	WAP
 				self::SOURCE_PC == $nVal ||		//	PC
-				self::SOURCE_DATAIMPORTER == $nVal ||	//	data importer
-				self::SOURCE_NIRVANA == $nVal ||	//	for nirvana
 				self::SOURCE_MGR_SYSTEM == $nVal	//	management system
 			));
 	}

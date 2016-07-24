@@ -16,8 +16,8 @@ class CResponse
 	//
 	//	constants
 	//
-	const SERVICE_DEFAULT_VERSION	= '1.0';	//	default service version
-	const CORS_DEFAULT_DOMAIN	= '.xs.cn';	//	default cors domain
+	const SERVICE_DEFAULT_VERSION	= '1.0';		//	default service version
+	const CORS_DEFAULT_DOMAIN	= '.dekuan.org';	//	default cors domain
 
 	//
 	//	Domains for Cross-Origin Resource Sharing
