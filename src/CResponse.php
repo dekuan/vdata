@@ -3,6 +3,7 @@
 namespace dekuan\vdata;
 
 use dekuan\vdata\CConst;
+use dekuan\delib\CLib;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -131,15 +132,17 @@ class CResponse
 		//
 		$arrRet = [];
 
-		if ( is_numeric( $nErrorId ) && is_string( $sErrorDesc ) )
+		if ( is_numeric( $nErrorId ) )
 		{
 			//	Okay
+			$nErrorId	= intval( $nErrorId );
+			$sErrorDesc	= ( ( is_string( $sErrorDesc ) || is_numeric( $sErrorDesc ) ) ? strval( $sErrorDesc ) : '' );
 			$arrRet =
-				[
-					'errorid'   => intval( $nErrorId ),
-					'errordesc' => strval( $sErrorDesc ),
-					'vdata'     => ( is_array( $arrVData ) ? $arrVData : [] ),
-				];
+			[
+				'errorid'   => $nErrorId,
+				'errordesc' => $sErrorDesc,
+				'vdata'     => ( is_array( $arrVData ) ? $arrVData : [] ),
+			];
 		}
 		else
 		{

@@ -18,6 +18,10 @@ class CNetwork
 	const HTTP_X_FORWARDED_FOR			= 'X-Forwarded-For';
 	const HTTP_VDATA_FORWARDED_FOR			= 'VDATA-Forwarded-For';
 
+	const DEFAULT_TIMEOUT				= 30;
+	const DEFAULT_VERSION				= '1.0';
+
+
 	//	errors
 	const ERROR_SUCCESS				= CConst::ERROR_SUCCESS;
 	const ERROR_NETWORK_CURL_NOT_SUPPORTED		= CConst::ERROR_USER_START + 1;
@@ -35,7 +39,7 @@ class CNetwork
 	//
 	//	configurations
 	//
-	private $m_arrMethods	= Array( 'GET', 'POST', 'PUT', 'DELETE' );
+	private $m_arrMethods	= [ 'GET', 'POST', 'PUT', 'DELETE' ];
 	private $m_arrHeaders	= [];
 
 
@@ -55,86 +59,85 @@ class CNetwork
 		return self::$g_cStaticInstance;
 	}
 
-	//
-	//	...
-	//
-	public function HttpGet( $sUrl, $arrParam, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
+	public function HttpGet( $arrParam )
 	{
-		//
-		//	sUrl		- [in] string	url
-		//	arrParam	- [in] array/string	parameters of HTTP request
-		//	nTimeout	- [in/opt] int		timeout in seconds
-		//	sResponse	- [in/opt] string	response content
-		//	nHttpStatus	- [in/opt] int		HTTP status
-		//	RETURN		- int			error code
-		//
-		$arrData =
-			[
-				'method'	=> 'GET',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> null,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
-	}
-	public function HttpGetWithCookie( $sUrl, $arrParam, $arrCookie, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
-	{
-		$arrData =
-			[
-				'method'	=> 'GET',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> $arrCookie,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
-	}
-	public function HttpGetWithCookieEx( $sUrl, $arrParam, $arrCookie, $sVersion, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
-	{
-		$arrData =
-			[
-				'method'	=> 'GET',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> $arrCookie,
-				'version'	=> $sVersion,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
+		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
+		{
+			return CConst::ERROR_PARAMETER;
+		}
+
+		$arrParam[ 'method' ]	= 'GET';
+		return $this->Http( $arrParam );
 	}
 
-	public function HttpPost( $sUrl, $arrParam, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
+	public function HttpPost( $arrParam )
 	{
-		$arrData =
-			[
-				'method'	=> 'POST',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> null,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
+		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
+		{
+			return CConst::ERROR_PARAMETER;
+		}
+
+		$arrParam[ 'method' ]	= 'POST';
+		return $this->Http( $arrParam );
 	}
-	public function HttpPostWithCookie( $sUrl, $arrParam, $arrCookie, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
+
+	public function Http( $arrParam )
 	{
-		$arrData =
-			[
-				'method'	=> 'POST',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> $arrCookie,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
+		//
+		//	arrParam	- Array
+		//
+		//	'method'	: string,	'GET', 'POST'
+		//	'url'		: string,	url
+		//	'gets'		: string/array,	appended as GET parameters
+		//	'posts'		: string/array,	POST data
+		//	'version'	: string,	service version required by client
+		//	'timeout'	: int,		timeout in seconds
+		//	'cookie'	: string/array,	cookies in string or array
+		//	'response'	: function,	function( sData, nStatus, arrHeaders )
+		//
+		//	RETURN		- error id
+		//
+		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
+		{
+			return CConst::ERROR_PARAMETER;
+		}
+
+		//	...
+		$nRet = CConst::ERROR_UNKNOWN;
+
+		//	...
+		$sMethod	= CLib::GetValEx( $arrParam, 'method', CLib::VARTYPE_STRING, '' );
+		$sMethod	= $this->_IsValidMethod( $sMethod ) ? $sMethod : $this->_GetDefaultMethod();
+
+		$sUrl		= CLib::GetValEx( $arrParam, 'url', CLib::VARTYPE_STRING, '' );
+		$nTimeout	= CLib::GetValEx( $arrParam, 'timeout', CLib::VARTYPE_NUMERIC, self::DEFAULT_TIMEOUT );
+		$arrCookie	= array_key_exists( 'cookie', $arrParam ) ? $arrParam[ 'cookie' ] : '';
+		$sVersion	= CLib::GetValEx( $arrParam, 'version', CLib::VARTYPE_STRING, self::DEFAULT_VERSION );
+
+		$arrData	=
+		[
+			'method'	=> $sMethod,
+			'url'		=> $sUrl,
+			'param'		=> $arrParam,
+			'cookie'	=> $arrCookie,
+			'version'	=> $sVersion,
+		];
+		$sResponse	= '';
+		$nHttpStatus	= 0;
+
+		//
+		//	send http request
+		//
+		$nRet = $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
+		if ( array_key_exists( 'response', $arrParam ) &&
+			is_callable( $arrParam[ 'response' ] ) )
+		{
+			$arrParam[ 'response' ]( $sResponse, $nHttpStatus, [] );
+		}
+
+		return $nRet;
 	}
-	public function HttpPostWithCookieEx( $sUrl, $arrParam, $arrCookie, $sVersion, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
-	{
-		$arrData =
-			[
-				'method'	=> 'POST',
-				'url'		=> $sUrl,
-				'param'		=> $arrParam,
-				'cookie'	=> $arrCookie,
-				'version'	=> $sVersion,
-			];
-		return $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
-	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -250,13 +253,13 @@ class CNetwork
 				//
 				$sDataString = http_build_query( $arrParam, '', '&', PHP_QUERY_RFC3986 );
 			}
-			else if ( is_string( $arrParam ) )
+			else if ( is_string( $arrParam ) && strlen( $arrParam ) > 0 )
 			{
 				$sDataString	= $arrParam;
 				$sContentType	= 'text/xml';
 			}
 
-			if ( $arrCookie && is_array( $arrCookie ) && count( $arrCookie ) > 0 )
+			if ( is_array( $arrCookie ) && count( $arrCookie ) > 0 )
 			{
 				//
 				//	The contents of the "Cookie: " header to be used in the HTTP request.
@@ -266,8 +269,12 @@ class CNetwork
 				$sCookieString = http_build_query( $arrCookie, '', '; ', PHP_QUERY_RFC3986 );
 				curl_setopt( $oCUrl, CURLOPT_COOKIE, $sCookieString );
 			}
+			else if ( is_string( $arrCookie ) && strlen( $arrCookie ) > 0 )
+			{
+				curl_setopt( $oCUrl, CURLOPT_COOKIE, $arrCookie );
+			}
 
-			if ( $sVersion && is_string( $sVersion ) && strlen( $sVersion ) > 0 )
+			if ( is_string( $sVersion ) && strlen( $sVersion ) > 0 )
 			{
 				$sVersion	= str_replace( '+', '', trim( $sVersion ) );
 				$this->_AppendHeader( 'Accept', sprintf( "application/xs.cn+json+version:%s", $sVersion ) );
@@ -315,7 +322,7 @@ class CNetwork
 			$oCUrl = null;
 
 			//	...
-			if ( array_key_exists( 'http_code', $arrStatus ) )
+			if ( CLib::IsArrayWithKeys( $arrStatus, 'http_code' ) )
 			{
 				//	...
 				$nHttpStatus = intval( $arrStatus[ 'http_code' ] );
@@ -353,6 +360,11 @@ class CNetwork
 
 		$sMethod = strtoupper( $sMethod );
 		return in_array( $sMethod, $this->m_arrMethods );
+	}
+
+	private function _GetDefaultMethod()
+	{
+		return $this->m_arrMethods[ 0 ];
 	}
 
 	//
