@@ -7,12 +7,12 @@ use dekuan\delib\CLib;
 
 
 //
-//	CNetwork
+//	CRequest
 //
-class CNetwork
+class CRequest extends CVData
 {
 	//	statics instance
-	protected static $g_cStaticInstance;
+	protected static $g_cStaticRequestInstance;
 
 	//	constants
 	const HTTP_X_FORWARDED_FOR			= 'X-Forwarded-For';
@@ -45,21 +45,22 @@ class CNetwork
 
 	public function __construct()
 	{
-		//	parent::__construct();
+		parent::__construct();
 	}
 	public function __destruct()
 	{
 	}
 	static function GetInstance()
 	{
-		if ( is_null( self::$g_cStaticInstance ) || ! isset( self::$g_cStaticInstance ) )
+		if ( is_null( self::$g_cStaticRequestInstance ) || ! isset( self::$g_cStaticRequestInstance ) )
 		{
-			self::$g_cStaticInstance = new self();
+			self::$g_cStaticRequestInstance = new self();
 		}
-		return self::$g_cStaticInstance;
+		return self::$g_cStaticRequestInstance;
 	}
 
-	public function HttpGet( $arrParam )
+
+	public function Get( $arrParam )
 	{
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
 		{
@@ -70,7 +71,7 @@ class CNetwork
 		return $this->Http( $arrParam );
 	}
 
-	public function HttpPost( $arrParam )
+	public function Post( $arrParam )
 	{
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
 		{
@@ -84,6 +85,66 @@ class CNetwork
 	public function Http( $arrParam )
 	{
 		//
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, arrJson )
+		//
+		//
+		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
+		{
+			return CConst::ERROR_PARAMETER;
+		}
+
+		//
+		//	original response
+		//
+		$pfnOriginResponse = array_key_exists( 'response', $arrParam ) ? $arrParam[ 'response' ] : null;
+
+
+		//
+		//	response in VDATA format
+		//
+		$arrParam[ 'response' ] =
+			function( $sData, $nStatus, $arrHeaders )
+			use ( $pfnOriginResponse )
+		{
+			$nErrorId	= CConst::ERROR_UNKNOWN;
+			$sErrorDesc	= '';
+			$arrVData	= [];
+			$sVersion	= '';
+			$arrJson	= [];
+
+			if ( 200 == $nStatus &&
+				is_string( $sData ) && strlen( $sData ) > 0 )
+			{
+				$arrJson = @ json_decode( $sData, true );
+				if ( $this->IsValidVDataJson( $arrJson ) )
+				{
+					$nErrorId	= $arrJson[ 'errorid' ];
+					$sErrorDesc	= $arrJson[ 'errordesc' ];
+					$arrVData	= $arrJson[ 'vdata' ];
+					$sVersion	= CLib::GetValEx( $arrJson, 'version', CLib::VARTYPE_STRING, '' );
+				}
+				else
+				{
+					$nErrorId = CConst::ERROR_JSON;
+				}
+			}
+			else
+			{
+				$nErrorId = CConst::ERROR_NETWORK;
+			}
+
+			if ( is_callable( $pfnOriginResponse ) )
+			{
+				$pfnOriginResponse();
+			}
+		};
+
+		return $this->HttpRaw( $arrParam );
+	}
+
+	public function HttpRaw( $arrParam )
+	{
+		//
 		//	arrParam	- Array
 		//
 		//	'method'	: string,	'GET', 'POST'
@@ -93,6 +154,9 @@ class CNetwork
 		//	'version'	: string,	service version required by client
 		//	'timeout'	: int,		timeout in seconds
 		//	'cookie'	: string/array,	cookies in string or array
+		//	'headers'	: array,	HTTP request header list, like this:
+		//					name1: value1
+		//					name2: value2
 		//	'response'	: function,	function( sData, nStatus, arrHeaders )
 		//
 		//	RETURN		- error id
