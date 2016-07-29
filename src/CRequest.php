@@ -62,6 +62,10 @@ class CRequest extends CVData
 
 	public function Get( $arrParam )
 	{
+		//
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrParents, arrJson )
+		//	RETURN		- error id
+		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
 		{
 			return CConst::ERROR_PARAMETER;
@@ -73,6 +77,10 @@ class CRequest extends CVData
 
 	public function Post( $arrParam )
 	{
+		//
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrParents, arrJson )
+		//	RETURN		- error id
+		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
 		{
 			return CConst::ERROR_PARAMETER;
@@ -85,8 +93,8 @@ class CRequest extends CVData
 	public function Http( $arrParam )
 	{
 		//
-		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, arrJson )
-		//
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, arrParents, arrJson )
+		//	RETURN		- error id
 		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
 		{
@@ -118,8 +126,8 @@ class CRequest extends CVData
 				$arrJson = @ json_decode( $sData, true );
 				if ( $this->IsValidVDataJson( $arrJson ) )
 				{
-					$nErrorId	= $arrJson[ 'errorid' ];
-					$sErrorDesc	= $arrJson[ 'errordesc' ];
+					$nErrorId	= intval( $arrJson[ 'errorid' ] );
+					$sErrorDesc	= strval( $arrJson[ 'errordesc' ] );
 					$arrVData	= $arrJson[ 'vdata' ];
 					$sVersion	= CLib::GetValEx( $arrJson, 'version', CLib::VARTYPE_STRING, '' );
 				}
@@ -135,7 +143,7 @@ class CRequest extends CVData
 
 			if ( is_callable( $pfnOriginResponse ) )
 			{
-				$pfnOriginResponse();
+				$pfnOriginResponse( $nErrorId, $sErrorDesc, $arrVData, $sVersion, [], $arrJson );
 			}
 		};
 
@@ -173,6 +181,11 @@ class CRequest extends CVData
 		$sMethod	= CLib::GetValEx( $arrParam, 'method', CLib::VARTYPE_STRING, '' );
 		$sMethod	= $this->_IsValidMethod( $sMethod ) ? $sMethod : $this->_GetDefaultMethod();
 
+		$arrGets	= array_key_exists( 'gets', $arrParam ) ? $arrParam[ 'gets' ] : '';
+		$arrGets	= is_array( $arrGets ) ? $arrGets : ( CLib::IsExistingString( $arrGets ) ? [ $arrGets ] : [] );
+		$arrPosts	= array_key_exists( 'posts', $arrParam ) ? $arrParam[ 'posts' ] : '';
+		$arrPosts	= is_array( $arrPosts ) ? $arrPosts : ( CLib::IsExistingString( $arrPosts ) ? [ $arrPosts ] : [] );
+
 		$sUrl		= CLib::GetValEx( $arrParam, 'url', CLib::VARTYPE_STRING, '' );
 		$nTimeout	= CLib::GetValEx( $arrParam, 'timeout', CLib::VARTYPE_NUMERIC, self::DEFAULT_TIMEOUT );
 		$arrCookie	= array_key_exists( 'cookie', $arrParam ) ? $arrParam[ 'cookie' ] : '';
@@ -182,7 +195,7 @@ class CRequest extends CVData
 		[
 			'method'	=> $sMethod,
 			'url'		=> $sUrl,
-			'param'		=> $arrParam,
+			'data'		=> ( 0 == strcasecmp( 'GET', $sMethod ) ? $arrGets : $arrPosts ),
 			'cookie'	=> $arrCookie,
 			'version'	=> $sVersion,
 		];
@@ -263,7 +276,7 @@ class CRequest extends CVData
 		//	...
 		$sMethod	= array_key_exists( 'method', $arrRequest ) ? $arrRequest['method'] : '';
 		$sUrl		= array_key_exists( 'url', $arrRequest ) ? $arrRequest['url'] : '';
-		$arrParam	= array_key_exists( 'param', $arrRequest ) ? $arrRequest['param'] : '';
+		$arrData	= array_key_exists( 'data', $arrRequest ) ? $arrRequest['data'] : '';
 		$arrCookie	= array_key_exists( 'cookie', $arrRequest ) ? $arrRequest['cookie'] : '';
 		$sVersion	= array_key_exists( 'version', $arrRequest ) ? $arrRequest['version'] : '';
 
@@ -309,17 +322,17 @@ class CRequest extends CVData
 			//
 			//	build data string / parameter
 			//
-			if ( is_array( $arrParam ) && count( $arrParam ) > 0 )
+			if ( is_array( $arrData ) && count( $arrData ) > 0 )
 			{
 				//
 				//	set enc_type to PHP_QUERY_RFC3986,
 				//	spaces will be percent encoded (%20).
 				//
-				$sDataString = http_build_query( $arrParam, '', '&', PHP_QUERY_RFC3986 );
+				$sDataString = http_build_query( $arrData, '', '&', PHP_QUERY_RFC3986 );
 			}
-			else if ( is_string( $arrParam ) && strlen( $arrParam ) > 0 )
+			else if ( is_string( $arrData ) && strlen( $arrData ) > 0 )
 			{
-				$sDataString	= $arrParam;
+				$sDataString	= $arrData;
 				$sContentType	= 'text/xml';
 			}
 
