@@ -63,7 +63,7 @@ class CRequest extends CVData
 	public function Get( $arrParam )
 	{
 		//
-		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrParents, arrJson )
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrJson )
 		//	RETURN		- error id
 		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
@@ -78,7 +78,7 @@ class CRequest extends CVData
 	public function Post( $arrParam )
 	{
 		//
-		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrParents, arrJson )
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, sVersion, arrJson )
 		//	RETURN		- error id
 		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
@@ -93,7 +93,7 @@ class CRequest extends CVData
 	public function Http( $arrParam )
 	{
 		//
-		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, arrParents, arrJson )
+		//	'response'	: function,	function( nErrorId, sErrorDesc, arrVData, arrJson )
 		//	RETURN		- error id
 		//
 		if ( ! is_array( $arrParam ) || 0 == count( $arrParam ) )
@@ -143,7 +143,7 @@ class CRequest extends CVData
 
 			if ( is_callable( $pfnOriginResponse ) )
 			{
-				$pfnOriginResponse( $nErrorId, $sErrorDesc, $arrVData, $sVersion, [], $arrJson );
+				$pfnOriginResponse( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $arrJson );
 			}
 		};
 
@@ -157,8 +157,8 @@ class CRequest extends CVData
 		//
 		//	'method'	: string,	'GET', 'POST'
 		//	'url'		: string,	url
-		//	'gets'		: string/array,	appended as GET parameters
-		//	'posts'		: string/array,	POST data
+		//	'data'		: string,array,	appended as parameters to url for GET
+		//					appended as body for POST and others
 		//	'version'	: string,	service version required by client
 		//	'timeout'	: int,		timeout in seconds
 		//	'cookie'	: string/array,	cookies in string or array
@@ -181,21 +181,19 @@ class CRequest extends CVData
 		$sMethod	= CLib::GetValEx( $arrParam, 'method', CLib::VARTYPE_STRING, '' );
 		$sMethod	= $this->_IsValidMethod( $sMethod ) ? $sMethod : $this->_GetDefaultMethod();
 
-		$arrGets	= array_key_exists( 'gets', $arrParam ) ? $arrParam[ 'gets' ] : '';
-		$arrGets	= is_array( $arrGets ) ? $arrGets : ( CLib::IsExistingString( $arrGets ) ? [ $arrGets ] : [] );
-		$arrPosts	= array_key_exists( 'posts', $arrParam ) ? $arrParam[ 'posts' ] : '';
-		$arrPosts	= is_array( $arrPosts ) ? $arrPosts : ( CLib::IsExistingString( $arrPosts ) ? [ $arrPosts ] : [] );
+		$arrData	= array_key_exists( 'data', $arrParam ) ? $arrParam[ 'data' ] : '';
+		$arrData	= is_array( $arrData ) ? $arrData : ( CLib::IsExistingString( $arrData ) ? [ $arrData ] : [] );
 
 		$sUrl		= CLib::GetValEx( $arrParam, 'url', CLib::VARTYPE_STRING, '' );
 		$nTimeout	= CLib::GetValEx( $arrParam, 'timeout', CLib::VARTYPE_NUMERIC, self::DEFAULT_TIMEOUT );
 		$arrCookie	= array_key_exists( 'cookie', $arrParam ) ? $arrParam[ 'cookie' ] : '';
 		$sVersion	= CLib::GetValEx( $arrParam, 'version', CLib::VARTYPE_STRING, self::DEFAULT_VERSION );
 
-		$arrData	=
+		$arrRequestData	=
 		[
 			'method'	=> $sMethod,
 			'url'		=> $sUrl,
-			'data'		=> ( 0 == strcasecmp( 'GET', $sMethod ) ? $arrGets : $arrPosts ),
+			'data'		=> $arrData,
 			'cookie'	=> $arrCookie,
 			'version'	=> $sVersion,
 		];
@@ -205,7 +203,7 @@ class CRequest extends CVData
 		//
 		//	send http request
 		//
-		$nRet = $this->_HttpSendRequest( $arrData, $nTimeout, $sResponse, $nHttpStatus );
+		$nRet = $this->_HttpSendRequest( $arrRequestData, $nTimeout, $sResponse, $nHttpStatus );
 		if ( array_key_exists( 'response', $arrParam ) &&
 			is_callable( $arrParam[ 'response' ] ) )
 		{

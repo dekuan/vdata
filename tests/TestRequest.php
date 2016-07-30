@@ -38,8 +38,7 @@ class TestRequest extends PHPUnit_Framework_TestCase
 		$cRequest->Post
 		([
 			'url'		=> 'http://account.xs.cn/api/login',
-			'gets'		=> [],
-			'posts'		=>
+			'data'		=>
 			[
 				'u_name'	=> '13810550569',
 				'u_pwd'		=> 'qqqqqqqq',
@@ -47,10 +46,10 @@ class TestRequest extends PHPUnit_Framework_TestCase
 				'u_ctype'	=> 0,
 			],
 			'version'	=> '1.0',
-			'timeout'	=> 60,
+			'timeout'	=> 30,
 			'cookie'	=> [],
 			'headers'	=> [],
-			'response'	=> function( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $arrParents, $arrJson )
+			'response'	=> function( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $arrJson )
 			{
 				echo "\r\n";
 				echo "nErrorId\t\t : $nErrorId\r\n";
@@ -58,9 +57,6 @@ class TestRequest extends PHPUnit_Framework_TestCase
 				echo "sVersion\t\t : $sVersion\r\n";
 				echo "arrVData\t\t :\r\n";
 				print_r( $arrVData );
-
-				echo "arrParents\t :\r\n";
-				print_r( $arrParents );
 
 				echo "arrJson\t :\r\n";
 				print_r( $arrJson );
