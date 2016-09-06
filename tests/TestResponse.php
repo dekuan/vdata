@@ -26,6 +26,8 @@ class TestResponse extends PHPUnit_Framework_TestCase
 	{
 		$cResponse	= CResponse::GetInstance();
 
+		$cResponse->SetServiceName( 'Test of responding array VData' );
+		$cResponse->SetServiceUrl( 'http://www.ladep.cn/' );
 		$arrVData	= $cResponse->GetVDataArray
 		(
 			0,
@@ -43,6 +45,8 @@ class TestResponse extends PHPUnit_Framework_TestCase
 	{
 		$cResponse	= CResponse::GetInstance();
 
+		$cResponse->SetServiceName( 'Test of responding string VData' );
+		$cResponse->SetServiceUrl( 'http://www.ladep.cn/' );
 		$sJson	= $cResponse->GetVDataString
 		(
 			0,

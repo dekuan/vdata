@@ -14,6 +14,8 @@ class CVData
 	//
 	//	constants
 	//
+	const SERVICE_DEFAULT_NAME	= 'VDATA';		//	default service name
+	const SERVICE_DEFAULT_URL	= '';			//	default service url
 	const SERVICE_DEFAULT_VERSION	= '1.0';		//	default service version
 
 	//	reserved keys
@@ -24,11 +26,16 @@ class CVData
 	//	members
 	//
 	protected $m_cCors;
+	protected $m_sServiceName;
+	protected $m_sServiceUrl;
 
 
 	public function __construct()
 	{
-		$this->m_cCors	= new CCors();
+		$this->m_cCors		= new CCors();
+
+		$this->m_sServiceName	= self::SERVICE_DEFAULT_NAME;
+		$this->m_sServiceUrl	= self::SERVICE_DEFAULT_URL;
 	}
 	public function __destruct()
 	{
@@ -42,6 +49,33 @@ class CVData
 		return self::$g_cStaticVDataInstance;
 	}
 
+	//
+	//	set service name and url
+	//
+	public function SetServiceName( $sServiceName )
+	{
+		$bRet	= false;
+
+		if ( CLib::IsExistingString( $sServiceName ) )
+		{
+			$bRet = true;
+			$this->m_sServiceName = $sServiceName;
+		}
+
+		return $bRet;
+	}
+	public function SetServiceUrl( $sUrl )
+	{
+		$bRet	= false;
+
+		if ( CLib::IsExistingString( $sUrl ) )
+		{
+			$bRet = true;
+			$this->m_sServiceUrl = $sUrl;
+		}
+
+		return $bRet;
+	}
 
 	//
 	//	get json in virtual data format
@@ -65,7 +99,8 @@ class CVData
 		//	arrExtra	- [in/opt] array	extra data by key-value pairs
 		//	RETURN		- json array
 		//
-		$arrRet = [];
+		$arrHeader	= [];
+		$arrRet		= [];
 
 		if ( is_numeric( $nErrorId ) )
 		{
@@ -111,7 +146,7 @@ class CVData
 					//	trim and lower case
 					$sKey	= strtolower( trim( $sKey ) );
 
-					//	append the valid item to return value
+					//	append the valid item to return array
 					if ( ! $this->IsReservedKey( $sKey ) &&
 						! array_key_exists( $sKey, $arrRet ) )
 					{
@@ -119,6 +154,26 @@ class CVData
 					}
 				}
 			}
+		}
+
+		//
+		//	set header
+		//
+		if ( CLib::IsExistingString( $this->m_sServiceName, true ) ||
+			CLib::IsExistingString( $this->m_sServiceUrl, true ) )
+		{
+			//
+			//	append name and url to
+			//	the beginning of return array
+			//
+			$arrRet = array_merge
+			(
+				[
+					'name'	=> $this->m_sServiceName,
+					'url'	=> $this->m_sServiceUrl,
+				],
+				$arrRet
+			);
 		}
 
 		return $arrRet;
