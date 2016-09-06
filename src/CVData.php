@@ -16,6 +16,9 @@ class CVData
 	//
 	const SERVICE_DEFAULT_VERSION	= '1.0';		//	default service version
 
+	//	reserved keys
+	const ARR_RESERVED_KEYS		= [ 'name', 'url', 'errorid', 'errordesc', 'vdata', 'parents' ];
+
 
 	//
 	//	members
@@ -43,14 +46,23 @@ class CVData
 	//
 	//	get json in virtual data format
 	//
-	public function GetVDataJson( $nErrorId, $sErrorDesc = '', $arrVData = [], $sVersion = '1.0', $bCached = null )
+	public function GetVDataArray
+	(
+		$nErrorId,
+		$sErrorDesc	= '',
+		$arrVData	= [],
+		$sVersion	= '1.0',
+		$bCached	= null,
+		$arrExtra	= []
+	)
 	{
 		//
-		//	nErrorId	- [in] int	error id
-		//	sErrorDesc	- [in] string	error description
-		//	arrVData	- [in] array	virtual data
-		//	sVersion	- [in] string	service version, default is '1.0'
-		//	bCached		- [in] bool	if the data come from cache
+		//	nErrorId	- [in] int		error id
+		//	sErrorDesc	- [in/opt] string	error description
+		//	arrVData	- [in/opt] array	virtual data
+		//	sVersion	- [in/opt] string	service version, default is '1.0'
+		//	bCached		- [in/opt] bool		if the data come from cache
+		//	arrExtra	- [in/opt] array	extra data by key-value pairs
 		//	RETURN		- json array
 		//
 		$arrRet = [];
@@ -87,26 +99,57 @@ class CVData
 			$arrRet['cache'] = intval( $bCached ? 1 : 0 );
 		}
 
+		//
+		//	extra data
+		//
+		if ( CLib::IsArrayWithKeys( $arrExtra ) )
+		{
+			foreach ( $arrExtra as $sKey => $vValue )
+			{
+				if ( CLib::IsExistingString( $sKey, true ) )
+				{
+					//	trim and lower case
+					$sKey	= strtolower( trim( $sKey ) );
+
+					//	append the valid item to return value
+					if ( ! $this->IsReservedKey( $sKey ) &&
+						! array_key_exists( $sKey, $arrRet ) )
+					{
+						$arrRet[ $sKey ] = $vValue;
+					}
+				}
+			}
+		}
+
 		return $arrRet;
 	}
 
 	//
 	//	get json encoded string in virtual data format
 	//
-	public function GetVDataString( $nErrorId, $sErrorDesc = '', $arrVData = [], $sVersion = '1.0', $bCached = null )
+	public function GetVDataString
+	(
+		$nErrorId,
+		$sErrorDesc	= '',
+		$arrVData	= [],
+		$sVersion	= '1.0',
+		$bCached	= null,
+		$arrExtra	= []
+	)
 	{
 		//
-		//	nErrorId	- [in] int	error id
-		//	sErrorDesc	- [in] string	error description
-		//	arrVData	- [in] array	virtual data
-		//	sVersion	- [in] string	service version, default is '1.0'
-		//	bCached		- [in] bool	if the data come from cache
+		//	nErrorId	- [in] int		error id
+		//	sErrorDesc	- [in/opt] string	error description
+		//	arrVData	- [in/opt] array	virtual data
+		//	sVersion	- [in/opt] string	service version, default is '1.0'
+		//	bCached		- [in/opt] bool		if the data come from cache
+		//	arrExtra	- [in/opt] array	extra data by key-value pairs
 		//	RETURN		- encoded json string
 		//
 		$sRet = '';
 
 		//	...
-		$arrJson = $this->GetVDataJson( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached );
+		$arrJson = $this->GetVDataArray( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached, $arrExtra );
 		if ( $this->IsValidVDataJson( $arrJson ) )
 		{
 			$sRet = @ json_encode( $arrJson );
@@ -129,16 +172,18 @@ class CVData
 		$arrVData	= [],
 		$sVersion	= self::SERVICE_DEFAULT_VERSION,
 		$bCached	= null,
+		$arrExtra	= [],
 		$nHttpStatus	= Response::HTTP_OK
 	)
 	{
 		//
-		//	nErrorId	- [in] int	error id
-		//	sErrorDesc	- [in] string	error description
-		//	arrVData	- [in] array	virtual data
-		//	sVersion	- [in] string	service version, default is '1.0'
-		//	bCached		- [in] bool	if the data come from cache
-		//	nHttpStatus	- [in] int	HTTP response status
+		//	nErrorId	- [in] int		error id
+		//	sErrorDesc	- [in/opt] string	error description
+		//	arrVData	- [in/opt] array	virtual data
+		//	sVersion	- [in/opt] string	service version, default is '1.0'
+		//	bCached		- [in/opt] bool		if the data come from cache
+		//	arrExtra	- [in/opt] array	extra data by key-value pairs
+		//	nHttpStatus	- [in/opt] int		HTTP response status
 		//	RETURN		- Instance of Symfony\Component\HttpFoundation\Response
 		//
 		$cResponse	= new Response();
@@ -153,7 +198,7 @@ class CVData
 		//
 		//	send json response to client
 		//
-		$sContentJson	= $this->GetVDataString( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached );
+		$sContentJson	= $this->GetVDataString( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached, $arrExtra );
 
 		//
 		//	tell the world/client, we are version x.x.x via Content-Type of HTTP header
@@ -199,6 +244,23 @@ class CVData
 	}
 
 	//
+	//	if the variable being evaluated is the reserved key
+	//
+	public function IsReservedKey( $sKey )
+	{
+		$bRet	= false;
+
+		if ( CLib::IsExistingString( $sKey, true ) )
+		{
+			$sKey	= strtolower( trim( $sKey ) );
+			$bRet	= in_array( $sKey, self::ARR_RESERVED_KEYS );
+		}
+
+		return $bRet;
+	}
+
+
+	//
 	//	get default json in virtual data format
 	//
 	public function GetDefaultVDataJson()
@@ -209,6 +271,14 @@ class CVData
 			'vdata'		=> [],
 			'version'	=> self::SERVICE_DEFAULT_VERSION
 		];
+	}
+
+	//
+	//	get default service version
+	//
+	public function GetDefaultVersion()
+	{
+		return self::SERVICE_DEFAULT_VERSION;
 	}
 
 	//

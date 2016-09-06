@@ -42,22 +42,27 @@ class CResponse extends CVData
 		$arrVData	= [],
 		$sVersion	= self::SERVICE_DEFAULT_VERSION,
 		$bCached	= null,
+		$arrExtra	= [],
 		$nHttpStatus	= Response::HTTP_OK
 	)
 	{
 		//
-		//	nErrorId	- [in] int	error id
-		//	sErrorDesc	- [in] string	error description
-		//	arrVData	- [in] array	virtual data
-		//	sVersion	- [in] string	service version, default is '1.0'
-		//	bCached		- [in] bool	if the data come from cache
-		//	nHttpStatus	- [in] int	HTTP response status
+		//	nErrorId	- [in] int		error id
+		//	sErrorDesc	- [in/opt] string	error description
+		//	arrVData	- [in/opt] array	virtual data
+		//	sVersion	- [in/opt] string	service version, default is '1.0'
+		//	bCached		- [in/opt] bool		if the data come from cache
+		//	arrExtra	- [in/opt] array	extra data by key-value pairs
+		//	nHttpStatus	- [in/opt] int		HTTP response status
 		//	RETURN		- error code
 		//
 		$nRet = CConst::ERROR_UNKNOWN;
 
 		//	...
-		$cResponse = $this->GetVDataResponse( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached, $nHttpStatus );
+		$cResponse = $this->GetVDataResponse
+		(
+			$nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached, $arrExtra, $nHttpStatus
+		);
 		if ( $cResponse instanceof Response )
 		{
 			$cResponse->send();
