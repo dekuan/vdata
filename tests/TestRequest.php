@@ -34,35 +34,38 @@ class TestRequest extends PHPUnit_Framework_TestCase
 		//
 
 		$cRequest	= CRequest::GetInstance();
-
-		$cRequest->Post
-		([
-			'url'		=> 'http://account.xs.cn/api/login',
-			'data'		=>
+		$arrResponse	= [];
+		$nCall		= $cRequest->Post
+		(
 			[
-				'u_name'	=> '13810550569',
-				'u_pwd'		=> 'qqqqqqqq',
-				'u_keep'	=> 1,
-				'u_ctype'	=> 0,
+				'url'		=> 'http://account.xs.cn/api/login',
+				'data'		=>
+				[
+					'u_name'	=> '13810550569',
+					'u_pwd'		=> 'qqqqqqqq',
+					'u_keep'	=> 1,
+					'u_ctype'	=> 0,
+				],
+				'version'	=> '1.0',
+				'timeout'	=> 30,		//	timeout in seconds
+				'cookie'	=> [],		//	array or string are both okay.
+				'headers'	=> [],
 			],
-			'version'	=> '1.0',
-			'timeout'	=> 30,
-			'cookie'	=> [],
-			'headers'	=> [],
-			'response'	=> function( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $arrJson )
-			{
-				echo "\r\n";
-				echo "nErrorId\t\t : $nErrorId\r\n";
-				echo "sErrorDesc\t : $sErrorDesc\r\n";
-				echo "sVersion\t\t : $sVersion\r\n";
-				echo "arrVData\t\t :\r\n";
-				print_r( $arrVData );
+			$arrResponse
+		);
+		if ( CConst::ERROR_SUCCESS == $nCall &&
+			$cRequest->IsValidVDataJson( $arrResponse ) )
+		{
+			echo "\r\n";
+			echo "nErrorId\t\t : " . $arrResponse['errorid'] . "\r\n";
+			echo "sErrorDesc\t : " . $arrResponse['errordesc'] . "\r\n";
+			echo "sVersion\t\t : " . $arrResponse['version'] . "\r\n";
+			echo "arrVData\t\t :\r\n";
+			print_r( $arrResponse['vdata'] );
 
-				echo "arrJson\t :\r\n";
-				print_r( $arrJson );
-			}
-		]);
-
+			echo "arrJson\t :\r\n";
+			print_r( $arrResponse['json'] );
+		}
 
 	}
 
