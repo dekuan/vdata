@@ -1,5 +1,5 @@
 # vdata
-A base composer for VDATA protocol.
+VDATA protocol is the best way to call or respond a HTTP service.
 
 
 
