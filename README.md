@@ -12,7 +12,7 @@ VDATA protocol is the best way to call or respond a HTTP service.
 	"version"		: "1.0",	//	string,	version of service 
 	"errorid"		: 0,		//	numeric,	error id
 	"errordesc"		: "",		//	string,	desciption of error
-	"parent"		: {},		//	array,	parent nodes
+	"parents"		: {},		//	array,	parent nodes
 	"vdata"			: {}		//	user customized data
 }
 ```
