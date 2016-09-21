@@ -54,7 +54,7 @@ class TestRequest extends PHPUnit_Framework_TestCase
 			$arrResponse
 		);
 		if ( CConst::ERROR_SUCCESS == $nCall &&
-			$cRequest->IsValidVDataJson( $arrResponse ) )
+			$cRequest->IsValidVData( $arrResponse ) )
 		{
 			echo "\r\n";
 			echo "nErrorId\t\t : " . $arrResponse['errorid'] . "\r\n";

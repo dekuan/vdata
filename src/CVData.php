@@ -205,7 +205,7 @@ class CVData
 
 		//	...
 		$arrJson = $this->GetVDataArray( $nErrorId, $sErrorDesc, $arrVData, $sVersion, $bCached, $arrExtra );
-		if ( $this->IsValidVDataJson( $arrJson ) )
+		if ( $this->IsValidVData( $arrJson ) )
 		{
 			$sRet = @ json_encode( $arrJson );
 		}
@@ -287,7 +287,7 @@ class CVData
 	//
 	//	if the variable being evaluated is a valid json in virtual data format ?
 	//
-	public function IsValidVDataJson( $arrJson )
+	public function IsValidVData( $arrJson )
 	{
 		return ( is_array( $arrJson ) &&
 			array_key_exists( 'errorid', $arrJson ) &&
@@ -343,7 +343,8 @@ class CVData
 	{
 		return sprintf
 		(
-			"application/json; version:%s",
+			"%s%s",
+			CConst::HTTP_HEADER_VERSION_CONTENT_TYPE,
 			( is_string( $sVersion ) && strlen( $sVersion ) > 0 ) ? $sVersion : self::SERVICE_DEFAULT_VERSION
 		);
 	}

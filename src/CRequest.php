@@ -141,7 +141,7 @@ class CRequest extends CVData
 			200 == $arrRawResponse[ 'status' ] )
 		{
 			$arrJson = @ json_decode( $arrRawResponse[ 'data' ], true );
-			if ( $this->IsValidVDataJson( $arrJson ) )
+			if ( $this->IsValidVData( $arrJson ) )
 			{
 				$nErrorId	= intval( $arrJson[ 'errorid' ] );
 				$sErrorDesc	= strval( $arrJson[ 'errordesc' ] );
@@ -384,7 +384,7 @@ class CRequest extends CVData
 			if ( is_string( $sVersion ) && strlen( $sVersion ) > 0 )
 			{
 				$sVersion	= str_replace( '+', '', trim( $sVersion ) );
-				$this->_AppendHeader( 'Accept', sprintf( "application/xs.cn+json+version:%s", $sVersion ) );
+				$this->_AppendHeader( 'Accept', sprintf( "%s%s", CConst::HTTP_HEADER_VERSION_ACCEPT, $sVersion ) );
 			}
 
 

@@ -7,6 +7,12 @@ namespace dekuan\vdata;
  */
 class CConst
 {
+	//
+	//	HTTP header
+	//
+	const HTTP_HEADER_VERSION_ACCEPT	= 'application/vdata+json+version:';
+	const HTTP_HEADER_VERSION_CONTENT_TYPE	= 'application/json; version:';
+
         //
         //      common status
         //
@@ -34,7 +40,7 @@ class CConst
 	const SOURCE_IOS		= 2;	//	IOS
 	const SOURCE_WAP		= 3;	//	WAP
 	const SOURCE_PC			= 4;	//	PC
-	const SOURCE_MGR_SYSTEM		= 30;	//	user from product management system / manage.xs.cn
+	const SOURCE_MGR_SYSTEM		= 30;	//	user from product management system
 
 
 	//
