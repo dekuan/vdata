@@ -242,7 +242,11 @@ class CRequest extends CVData
 
 		return $nRet;
 	}
-
+	public function IsValidRawResponse( $arrData )
+	{
+		return ( CLib::IsArrayWithKeys( $arrData, [ 'data', 'status', 'headers' ] ) &&
+			is_numeric( $arrData[ 'status' ] ) );
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////
