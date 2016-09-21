@@ -69,6 +69,39 @@ class TestRequest extends PHPUnit_Framework_TestCase
 
 	}
 
+	public function testIsValidRawResponse()
+	{
+		$arrData	=
+		[
+			[ false,	null ],
+			[ false,	'' ],
+			[ false,	[] ],
+			[ false,	123 ],
+			[ false,	[ 'data' => 'sss', 'status' => 'ss', 'headers' => []] ],
+			[ true,		[ 'data' => 'sss', 'status' => 200, 'headers' => []] ],
+		];
 
+		$cRequest	= CRequest::GetInstance();
+		$nNo		= 1;
+
+		//	...
+		echo "\r\n";
+
+		foreach ( $arrData as $arrItem )
+		{
+			$bGoal	= $arrItem[ 0 ];
+			$arrRes	= $arrItem[ 1 ];
+
+			printf
+			(
+				"[%02d] IsValidRawResponse\t- %s\r\n",
+				$nNo,
+				( $bGoal == $cRequest->IsValidRawResponse( $arrRes ) ? "OK" : "ERROR" )
+			);
+
+			//	...
+			$nNo ++;
+		}
+	}
 
 }
