@@ -32,7 +32,7 @@ class CCors
 	public function SetCorsDomains( $arrDomains )
 	{
 		//
-		//	arrDomains	- [in] array,	[ 'domain1', 'domain2' ]
+		//	arrDomains	- [in] array,	[ '.domain1.com', 'www.domain2.com' ]
 		//	RETURN		- true / false
 		//
 		if ( ! is_array( $arrDomains ) )
