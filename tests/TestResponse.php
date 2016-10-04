@@ -28,6 +28,7 @@ class TestResponse extends PHPUnit_Framework_TestCase
 
 		$cResponse->SetServiceName( 'Test of responding array VData' );
 		$cResponse->SetServiceUrl( 'http://www.ladep.cn/' );
+		$cResponse->SetCorsDomains( [ '.domain1.com' ] );
 		$arrVData	= $cResponse->GetVDataArray
 		(
 			0,
