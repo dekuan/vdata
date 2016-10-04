@@ -206,9 +206,3 @@ $nCall	= $cResponse->Send
 ```
 
 
-
-
-
-
-
-
