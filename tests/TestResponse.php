@@ -8,8 +8,7 @@ require __DIR__ . '/../src/CVData.php';
 require __DIR__ . '/../src/CRequest.php';
 require __DIR__ . '/../src/CResponse.php';
 
-use dekuan\vdata\CConst;
-use dekuan\vdata\CRequest;
+
 use dekuan\vdata\CResponse;
 
 
@@ -28,6 +27,7 @@ class TestResponse extends PHPUnit_Framework_TestCase
 
 		$cResponse->SetServiceName( 'Test of responding array VData' );
 		$cResponse->SetServiceUrl( 'http://www.ladep.cn/' );
+		$cResponse->SetCorsDomains( [ '.domain1.com' ] );
 		$arrVData	= $cResponse->GetVDataArray
 		(
 			0,
