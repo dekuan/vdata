@@ -10,7 +10,7 @@ VDATA protocol is the best way to call or respond a HTTP/HTTPS service.
 * RESTfull api supported.
 * Cross-Origin Resource Sharing supported.
 * Send version request by HTTP_ACCEPT from client.
-* Respond inservice version of service from server.
+* Respond in-service version of service from server.
 
 
 
