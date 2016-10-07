@@ -207,7 +207,7 @@ $nCall		= $cRequest->HttpRaw
 	$arrResponse
 );
 if ( CConst::ERROR_SUCCESS == $nCall &&
-	$cRequest->IsValidVData( $arrResponse ) )
+	$cRequest->IsValidRawResponse( $arrResponse ) )
 {
 	//	arrResponse	- Array
 	//		'data'		: http data
