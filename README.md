@@ -97,7 +97,7 @@ $cResponse->SetCorsDomains( [ '.domain1.com' ] );
 
 ## Send Request to Server
 
-
+#### 1, Send GET request and receive VData response
 
 ```
 use dekuan\vdata\CConst;
@@ -106,10 +106,10 @@ use dekuan\vdata\CRequest;
 
 $cRequest	= CRequest::GetInstance();
 $arrResponse	= [];
-$nCall		= $cRequest->Post
+$nCall		= $cRequest->Get
 (
 	[
-		'url'		=> 'http://account.xs.cn/api/login',
+		'url'		=> 'http://api-account.yunkuan.org/api/login',
 		'data'		=>
 		[
 			'u_name'	=> 'username',
@@ -126,11 +126,99 @@ $nCall		= $cRequest->Post
 if ( CConst::ERROR_SUCCESS == $nCall &&
 	$cRequest->IsValidVData( $arrResponse ) )
 {
+	//	arrResponse
+	//		'errorid'	: error id
+	//		'errordesc'	: error desc
+	//		'vdata'		: virtual data
+	//		'version'	: version of service
+	//		'json'		: original json array
 	print_r( $arrResponse );
 }
 
 
 ```
+
+#### 2, Send POST request and receive VData response
+
+```
+use dekuan\vdata\CConst;
+use dekuan\vdata\CRequest;
+
+
+$cRequest	= CRequest::GetInstance();
+$arrResponse	= [];
+$nCall		= $cRequest->Post
+(
+	[
+		'url'		=> 'http://api-account.yunkuan.org/api/login',
+		'data'		=>
+		[
+			'u_name'	=> 'username',
+			'u_pwd'		=> 'password',
+			'u_keep'	=> 1
+		],
+		'version'	=> '1.0',
+		'timeout'	=> 30,		//	timeout in seconds
+		'cookie'	=> [],		//	array or string are both okay.
+		'headers'	=> [],
+	],
+	$arrResponse
+);
+if ( CConst::ERROR_SUCCESS == $nCall &&
+	$cRequest->IsValidVData( $arrResponse ) )
+{
+	//	arrResponse
+	//		'errorid'	: error id
+	//		'errordesc'	: error desc
+	//		'vdata'		: virtual data
+	//		'version'	: version of service
+	//		'json'		: original json array
+	print_r( $arrResponse );
+}
+
+
+```
+
+#### 3, Send GET/POST request and receive Raw response
+
+```
+use dekuan\vdata\CConst;
+use dekuan\vdata\CRequest;
+
+
+$cRequest	= CRequest::GetInstance();
+$arrResponse	= [];
+$nCall		= $cRequest->HttpRaw
+(
+	[
+		'method'	=> 'POST',	//	'GET' / 'POST'
+		'url'		=> 'http://api-account.yunkuan.org/api/login',
+		'data'		=>
+		[
+			'u_name'	=> 'username',
+			'u_pwd'		=> 'password',
+			'u_keep'	=> 1
+		],
+		'version'	=> '1.0',
+		'timeout'	=> 30,		//	timeout in seconds
+		'cookie'	=> [],		//	array or string are both okay.
+		'headers'	=> [],
+	],
+	$arrResponse
+);
+if ( CConst::ERROR_SUCCESS == $nCall &&
+	$cRequest->IsValidVData( $arrResponse ) )
+{
+	//	arrResponse	- Array
+	//		'data'		: http data
+	//		'status'	: status code
+	//		'headers'	: response headers
+	print_r( $arrResponse );
+}
+
+
+```
+
 
 
 
