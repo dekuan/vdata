@@ -1,5 +1,5 @@
 # vdata
-VDATA protocol is the best way to call or respond a HTTP/HTTPS service.
+VDATA protocol is the best protocol for calling or responding a HTTP/HTTPS service.
 
 
 ## Features
