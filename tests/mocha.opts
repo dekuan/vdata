@@ -1,0 +1,6 @@
+--require dist/js/vdata.js
+
+--ui tdd
+--reporter spec
+--recursive
+--growl

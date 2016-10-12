@@ -1,0 +1,20 @@
+{
+	"name"		: "testing-with-mocha",
+	"version"	: "1.0.0",
+	"author"	: "Liu QiXing <liuqixing@dekuan.org>",
+	"description"	: "VData js version testing",
+	"scripts"	:
+	{
+		"test": "make test"
+	},
+	"dependencies":
+	{
+		"unit.js"	: ">=2.0",
+		"chai"		: "~1.4.2",
+		"mocha"		: "*"
+	},
+	"engines":
+	{
+		"node": ">=0.8"
+	}
+}
