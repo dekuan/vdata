@@ -1,27 +1,38 @@
 var test	= require('unit.js');
 var expect	= require('chai').expect;
-var vdata	= require('../../dist/js/vdata.js');
+var fs		= require('fs');
 
 var jsdom	= require('jsdom');
-var document	= jsdom.jsdom("");
-var window	= document.defaultView;
+//var document	= jsdom.jsdom("");
 
-global.window	= window;
-global.$	= require('jquery')( window );
+
+//var $;
+//var jsdom	= require('mocha-jsdom');
+//var rerequire	= jsdom.rerequire;
+
+global.document	= jsdom.jsdom();
+global.window	= global.document.defaultView;
+global.$	= require( 'jquery' )( global.window );
+
+var $ = global.$;
+
+//var $		= require('jquery')( ( require("jsdom").jsdom().defaultView ) );
+
+var vdata	= require('../../dist/js/vdata.js');
+
 
 
 
 describe( "vdata", function()
 {
+	var $;
 
-	//	...
-	//var $;
-	//
-	//jsdom();
-	//before( function()
-	//{
-	//	$ = require('jquery');
-	//});
+	beforeEach(function()
+	{
+		$		= require('jquery')( ( require("jsdom").jsdom().defaultView ) );
+		console.log('before every test in every file');
+	});
+
 
 
 	describe( "#errors", function()
@@ -88,8 +99,31 @@ describe( "vdata", function()
 
 	describe( "#functions", function()
 	{
+		//	...
+		//jsdom();
+
+		before( function()
+		{
+			//$ = rerequire('jquery');
 
 
+			//var window	= document.defaultView;
+			//
+			//global.window	= window;
+			//global.document	= document;
+			//global.$	= require('jquery')( document.defaultView, true );
+		});
+
+
+		it ( "`$` should be an object", function()
+		{
+			expect( typeof( $ ) ).to.equal( 'object' );
+		});
+
+		it ( "`$.trim` should be `function`", function()
+		{
+			expect( $.trim ).to.equal( 'function' );
+		});
 
 		it ( "`Get` method should return an vdata object", function()
 		{
