@@ -185,6 +185,7 @@ class CRequest extends CVData
 		//		'version'	: string,	service version required by client
 		//		'timeout'	: int,		timeout in seconds
 		//		'cookie'	: string/array,	cookies in string or array
+		//		'version'	: string,	requested service version
 		//		'headers'	: array,	HTTP request header list, like this:
 		//						name1: value1
 		//						name2: value2

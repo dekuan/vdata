@@ -295,6 +295,13 @@ $nCall	= $cResponse->Send
 
 
 
+## Testing
+
+```
+
+mocha tests/js/index.test.js
+
+```
 
 
 
