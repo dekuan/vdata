@@ -1,53 +1,23 @@
 var jsdom	= require('mocha-jsdom');
 var expect	= require('chai').expect;
 var fs		= require('fs');
-<<<<<<< HEAD
-
-var jsdom	= require('jsdom');
-//var document	= jsdom.jsdom("");
-
-
-//var $;
-//var jsdom	= require('mocha-jsdom');
-//var rerequire	= jsdom.rerequire;
-
-global.document	= jsdom.jsdom();
-global.window	= global.document.defaultView;
-global.$	= require( 'jquery' )( global.window );
-
-var $ = global.$;
-
-//var $		= require('jquery')( ( require("jsdom").jsdom().defaultView ) );
 
 var vdata	= require('../../dist/js/vdata.js');
-
-
-=======
->>>>>>> e8ee790ba0de547d144c63ba171d8b8100f6f43e
 
 
 describe( "vdata", function()
 {
 	var $;
-<<<<<<< HEAD
-
-	beforeEach(function()
-	{
-		$		= require('jquery')( ( require("jsdom").jsdom().defaultView ) );
-		console.log('before every test in every file');
-	});
-
-=======
 
 	jsdom
 	({
 		src : fs.readFileSync( 'dist/js/vdata.js', 'utf-8' )
 	});
->>>>>>> e8ee790ba0de547d144c63ba171d8b8100f6f43e
 
 	before( function()
 	{
 		$ = require('jquery');
+		$ = window.$;
 	});
 
 	describe( "#errors", function()
@@ -114,23 +84,6 @@ describe( "vdata", function()
 
 	describe( "#functions", function()
 	{
-<<<<<<< HEAD
-		//	...
-		//jsdom();
-
-		before( function()
-		{
-			//$ = rerequire('jquery');
-
-
-			//var window	= document.defaultView;
-			//
-			//global.window	= window;
-			//global.document	= document;
-			//global.$	= require('jquery')( document.defaultView, true );
-		});
-
-
 		it ( "`$` should be an object", function()
 		{
 			expect( typeof( $ ) ).to.equal( 'object' );
@@ -141,8 +94,6 @@ describe( "vdata", function()
 			expect( $.trim ).to.equal( 'function' );
 		});
 
-=======
->>>>>>> e8ee790ba0de547d144c63ba171d8b8100f6f43e
 		it ( "`Get` method should return an vdata object", function()
 		{
 			VDATA.Get

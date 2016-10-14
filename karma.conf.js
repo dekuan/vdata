@@ -9,7 +9,7 @@ module.exports	= function( config )
 		reporters	: [ 'spec', 'coverage' ],
 		files		:
 		[
-			'tests/js/vdata.test.js'
+			'tests/js.command/vdata.test.js'
 		],
 		preprocessors	:
 		{
@@ -31,7 +31,7 @@ module.exports	= function( config )
 				loaders	:
 				[
 					{
-						include	: path.resolve( __dirname, 'tests/js/jquery-1.11.3.js' ),
+						include	: path.resolve( __dirname, 'tests/js.web/jquery.js' ),
 						loader	: 'istanbul-instrumenter'
 					}
 				]
