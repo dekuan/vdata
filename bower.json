@@ -28,6 +28,10 @@
 		"test",
 		"tests",
 		"src",
+		"composer.json",
+		"karma.conf.js",
+		"mocha.opts",
+		"package.json",
 		"dist/js/vdata.independent.js"
 	],
 	"dependencies":
