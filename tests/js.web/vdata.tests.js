@@ -79,12 +79,28 @@ describe( "vdata", function()
 			expect( typeof( $.trim ) ).to.equal( 'function' );
 		});
 
-		it ( "`Get` method should return an vdata object", function()
+		it ( "`Get` method should return an vdata object, see console of browser", function()
 		{
 			VDATA.Get
 			(
 				{
-					'url'	: 'http://www.dekuan.org/',
+					'url'	: 'http://www.dekuan.org/api/vdata/',
+					'async'	: false
+				},
+				function( oResponse )
+				{
+					console.log( oResponse );
+					expect( typeof( oResponse ) ).to.equal( 'object' );
+				}
+			);
+		});
+
+		it ( "`Post` method should return an vdata object, see console of browser", function()
+		{
+			VDATA.Post
+			(
+				{
+					'url'	: 'http://www.dekuan.org/api/vdata/',
 					'async'	: false
 				},
 				function( oResponse )
