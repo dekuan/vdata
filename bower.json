@@ -27,7 +27,8 @@
 		"bower_components",
 		"test",
 		"tests",
-		"src"
+		"src",
+		"dist/js/vdata.independent.js"
 	],
 	"dependencies":
 	{

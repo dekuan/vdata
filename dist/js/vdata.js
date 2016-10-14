@@ -6,12 +6,64 @@
  ********************************************************************************/
 
 
+
 /**
- *	class of CVData
+ *	class of CVDataLib
  */
-function CVData()
+function CVDataLib()
 {
-	var m_oThis = this;
+	var m_oThis	= this;
+
+	/**
+	 *	@return {boolean}
+	 */
+	this.IsString = function( vValue )
+	{
+		return ( "string" === typeof( vValue ) );
+	};
+
+	/**
+	 *	@return {boolean}
+	 */
+	this.IsArray = function( vValue )
+	{
+		return ( "array" === typeof( vValue ) );
+	};
+
+	/**
+	 *	@return {boolean}
+	 */
+	this.IsNumeric = function( vValue )
+	{
+		//	copied from jQuery
+		return ! m_oThis.IsArray( vValue ) && ( vValue - parseFloat( vValue ) + 1 ) >= 0;
+	};
+
+	/**
+	 *	@return {boolean}
+	 */
+	this.IsFunction = function( vValue )
+	{
+		return ( "function" === typeof( vValue ) );
+	};
+
+	/**
+	 *	@return {boolean}
+	 */
+	this.IsObject = function( vValue )
+	{
+		return ( "object" === typeof( vValue ) );
+	};
+}
+
+/**
+ *	class of CVDataCore
+ */
+function CVDataCore()
+{
+	var m_oThis	= this;
+	var m_cLib	= new CVDataLib();
+
 
 	/**
 	 *	@return {number}
@@ -19,7 +71,7 @@ function CVData()
 	 */
 	this.Get = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! _IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
 		{
 			return false;
 		}
@@ -35,7 +87,7 @@ function CVData()
 	 */
 	this.Post = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! _IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -51,7 +103,7 @@ function CVData()
 	 */
 	this.Put = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! _IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -67,7 +119,7 @@ function CVData()
 	 */
 	this.Delete = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! _IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -98,7 +150,7 @@ function CVData()
 		var oHeader;
 		var oResponse;
 
-		if ( ! m_oThis.IsValidParam( arrParam, true ) || ! _IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam, true ) || ! m_cLib.IsFunction( pfnCallback ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -115,7 +167,7 @@ function CVData()
 		bASync		= Boolean( _GetSafeValue( arrParam, 'async', true ) );
 
 		//	get safe values
-		oData		= ( _IsObject( oData ) ? oData : {} );
+		oData		= ( m_cLib.IsObject( oData ) ? oData : {} );
 
 		//	Request header
 		oHeader		=
@@ -150,7 +202,7 @@ function CVData()
 					else
 					{
 						oResponse[ 'errorid' ]		= VDATA.ERROR.JSON;
-						oResponse[ 'errordesc' ]	= _IsString( sStatus ) ? sStatus : '';
+						oResponse[ 'errordesc' ]	= m_cLib.IsString( sStatus ) ? sStatus : '';
 					}
 
 					//
@@ -209,16 +261,16 @@ function CVData()
 	this.IsValidVData = function( arrJson )
 	{
 		return ( arrJson &&
-			_IsObject( arrJson ) &&
+			m_cLib.IsObject( arrJson ) &&
 			arrJson.hasOwnProperty( 'errorid' ) &&
 			arrJson.hasOwnProperty( 'errordesc' ) &&
 			arrJson.hasOwnProperty( 'vdata' ) &&
-			$.isNumeric( arrJson[ 'errorid' ] ) &&
-			_IsString( arrJson[ 'errordesc' ] ) &&
-			( $.isArray( arrJson[ 'vdata' ] ) || _IsObject( arrJson[ 'vdata' ] ) ) &&
+			m_cLib.IsNumeric( arrJson[ 'errorid' ] ) &&
+			m_cLib.IsString( arrJson[ 'errordesc' ] ) &&
+			( $.isArray( arrJson[ 'vdata' ] ) || m_cLib.IsObject( arrJson[ 'vdata' ] ) ) &&
 			(
 				arrJson.hasOwnProperty( 'json' ) ?
-					( _IsObject( arrJson[ 'json' ] ) || $.isArray( arrJson[ 'json' ] ) )
+					( m_cLib.IsObject( arrJson[ 'json' ] ) || $.isArray( arrJson[ 'json' ] ) )
 					:
 					true
 			)
@@ -262,15 +314,15 @@ function CVData()
 		bRet = false;
 
 		if ( arrParam &&
-			_IsObject( arrParam ) &&
+			m_cLib.IsObject( arrParam ) &&
 			arrParam.hasOwnProperty( 'url' ) &&
-			_IsString( arrParam[ 'url' ] ) &&
+			m_cLib.IsString( arrParam[ 'url' ] ) &&
 			arrParam[ 'url'].length > 0 )
 		{
 			if ( bCheckMore )
 			{
 				if ( arrParam.hasOwnProperty( 'method' ) &&
-					_IsString( arrParam[ 'method' ] ) )
+					m_cLib.IsString( arrParam[ 'method' ] ) )
 				{
 					bRet = true;
 				}
@@ -289,7 +341,7 @@ function CVData()
 	 */
 	this.IsSupportedMethod = function( sMethod )
 	{
-		if ( ! _IsString( sMethod ) || 0 == sMethod.length )
+		if ( ! m_cLib.IsString( sMethod ) || 0 == sMethod.length )
 		{
 			return false;
 		}
@@ -307,7 +359,7 @@ function CVData()
 	 */
 	this.GetSafeMethod = function( sMethod )
 	{
-		if ( ! _IsString( sMethod ) || 0 == sMethod.length )
+		if ( ! m_cLib.IsString( sMethod ) || 0 == sMethod.length )
 		{
 			return VDATA.CONST.DEFAULT_METHOD;
 		}
@@ -334,7 +386,7 @@ function CVData()
 	 */
 	this.GetSafeVersion = function( sVersion )
 	{
-		if ( ! _IsString( sVersion ) || 0 == sVersion.length )
+		if ( ! m_cLib.IsString( sVersion ) || 0 == sVersion.length )
 		{
 			return VDATA.CONST.DEFAULT_VERSION;
 		}
@@ -344,7 +396,7 @@ function CVData()
 
 		//	...
 		sVersion = $.trim( sVersion );
-		if ( _IsString( sVersion ) && sVersion.length > 0 )
+		if ( m_cLib.IsString( sVersion ) && sVersion.length > 0 )
 		{
 			sRet = sVersion;
 		}
@@ -362,7 +414,7 @@ function CVData()
 	 */
 	this.GetSafeTimeout = function( nTimeout )
 	{
-		return ( $.isNumber( nTimeout ) && nTimeout > 0 ) ? parseInt( nTimeout ) : VDATA.CONST.DEFAULT_TIMEOUT;
+		return ( m_cLib.IsNumeric( nTimeout ) && nTimeout > 0 ) ? parseInt( nTimeout ) : VDATA.CONST.DEFAULT_TIMEOUT;
 	};
 
 
@@ -379,30 +431,13 @@ function CVData()
 	}
 
 	/**
-	 *	@return {boolean}
+	 *	@return {*}
 	 */
-	function _IsString( vValue )
-	{
-		return ( "string" === typeof( vValue ) );
-	}
-	function _IsFunction( vValue )
-	{
-		return ( "function" === typeof( vValue ) );
-	}
-
-	/**
-	 *	@return {boolean}
-	 */
-	function _IsObject( vValue )
-	{
-		return ( "object" === typeof( vValue ) );
-	}
-
 	function _GetSafeValue( oData, sKey, vDefaultValue )
 	{
 		var vRet;
 
-		if ( ! _IsObject( oData ) || ! _IsString( sKey ) )
+		if ( ! m_cLib.IsObject( oData ) || ! m_cLib.IsString( sKey ) )
 		{
 			return vDefaultValue;
 		}
@@ -431,7 +466,7 @@ function CVData()
  *	defines VDATA
  */
 var window	= window || {};
-var VDATA	= window.VDATA || ( window.VDATA = new CVData() );
+var VDATA	= window.VDATA || ( window.VDATA = new CVDataCore() );
 
 //
 //	error ids of VData
@@ -465,13 +500,13 @@ VDATA.ERROR	=
 	DB_TRANSACTION		: -100060,	//	error in transaction
 	DB_TABLE_NAME		: -100065,	//	error in table name
 
-	REQUEST_VIA_IP	: -100100,	//	bad request via ip request
+	REQUEST_VIA_IP		: -100100,	//	bad request via ip request
 
-	NETWORK		: -100300,	//	error network
-	JSON		: -100301,	//	error json
-	JSON_ERRORID	: -100302,	//	error json.errorid
-	JSON_ERRORDESC	: -100303,	//	error json.errordesc
-	JSON_VDATA	: -100304	//	error json.vdata
+	NETWORK			: -100300,	//	error network
+	JSON			: -100301,	//	error json
+	JSON_ERRORID		: -100302,	//	error json.errorid
+	JSON_ERRORDESC		: -100303,	//	error json.errordesc
+	JSON_VDATA		: -100304	//	error json.vdata
 };
 
 //
@@ -503,3 +538,6 @@ if ( "object" === typeof module && "object" === typeof module.exports )
 {
 	module.exports.VDATA = VDATA;
 }
+
+
+
