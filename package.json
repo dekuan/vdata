@@ -1,9 +1,16 @@
 {
-	"name"		: "testing-with-mocha",
-	"version"	: "1.0.0",
+	"name"		: "vdata",
+	"version"	: "1.0.7",
 	"author"	: "Liu QiXing <liuqixing@dekuan.org>",
-	"description"	: "VData js version testing",
+	"description"	: "JavaScript client of VDATA protocol. VDATA protocol is the best protocol for calling or responding a HTTP/HTTPS service.",
+	"homepage"	: "https://github.com/dekuan/vdata",
 	"main"		: "dist/js/vdata.js",
+	"license"	: "MIT",
+	"repository"	:
+	{
+		"type"	: "git",
+		"url"	: "https://github.com/dekuan/vdata.git"
+	},
 	"files"		:
 	[
 		"dist/**",
@@ -14,26 +21,39 @@
 	{
 		"test": "make test"
 	},
-	"dependencies":
+	"keywords"	:
+	[
+		"dekuan",
+		"vdata",
+		"rcp",
+		"http",
+		"services",
+		"library"
+	],
+	"dependencies"	:
 	{
-		"unit.js"	: ">=2.0",
-		"chai"		: "~1.4.2",
-		"mocha"		: "*"
+		"jquery": "^1.11.3"
 	},
-	"devDependencies":
+	"devDependencies" :
 	{
 		"mocha": "^2.4.5",
 		"chai": "^3.5.0",
-		"jquery": "^1.11.3",
-		"mocha-jsdom": "*",
-		"jsdom-global": "*",
-		"karma": "^0.13.22",
-		"karma-mocha": "^0.2.2",
-		"karma-sinon-chai": "^1.2.0",
-		"sinon": "^1.17.3",
-		"sinon-chai": "^2.8.0",
-		"webpack": "^1.12.14"
+		"jquery": "^1.11.3"
 	},
+	"ignore" :
+	[
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests",
+		"src",
+		"composer.json",
+		"karma.conf.js",
+		"mocha.opts",
+		"package.json",
+		"dist/js/vdata.independent.js"
+	],
 	"engines":
 	{
 		"node": ">=0.8"

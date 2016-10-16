@@ -1,5 +1,6 @@
 /.idea/
 /vendor/
 /node_modules/
+/bower_components
 composer.lock
 npm-debug.log
