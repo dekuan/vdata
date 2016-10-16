@@ -15,9 +15,9 @@ mb_internal_encoding( "UTF-8" );
 ob_start();
 
 
-require_once(dirname(__DIR__) . "/vendor/autoload.php");
-require_once(dirname(__DIR__) . "/src/CConst.php");
-require_once(dirname(__DIR__) . "/src/CRemote.php");
+require_once( __DIR__ . "/../../vendor/autoload.php");
+require_once( __DIR__ . "../../src/CConst.php");
+require_once( __DIR__ . "../../src/CRemote.php");
 
 
 use dekuan\vdata\CRemote;
