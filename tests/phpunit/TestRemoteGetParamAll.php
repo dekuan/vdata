@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../src/CRemote.php';
-require_once __DIR__ . '/../src/CConst.php';
-require_once __DIR__ . '/../vendor/dekuan/delib/src/CLib.php';
+require_once __DIR__ . '/../../src/CRemote.php';
+require_once __DIR__ . '/../../src/CConst.php';
+require_once __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
 
 
 

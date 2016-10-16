@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../vendor/dekuan/delib/src/CLib.php';
-require __DIR__ . '/../src/CConst.php';
-require __DIR__ . '/../src/CCors.php';
-require __DIR__ . '/../src/CVData.php';
-require __DIR__ . '/../src/CRequest.php';
-require __DIR__ . '/../src/CResponse.php';
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
+require __DIR__ . '/../../src/CConst.php';
+require __DIR__ . '/../../src/CCors.php';
+require __DIR__ . '/../../src/CVData.php';
+require __DIR__ . '/../../src/CRequest.php';
+require __DIR__ . '/../../src/CResponse.php';
 
 use dekuan\vdata\CConst;
 use dekuan\vdata\CRequest;

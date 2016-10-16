@@ -135,9 +135,8 @@ class CRequest extends CVData
 		//	...
 		$nRet = $this->HttpRaw( $arrParam, $arrRawResponse );
 		if ( CConst::ERROR_SUCCESS == $nRet &&
-			CLib::IsArrayWithKeys( $arrRawResponse, [ 'data', 'status', 'headers' ] ) &&
+			$this->IsValidRawResponse( $arrRawResponse ) &&
 			is_string( $arrRawResponse[ 'data' ] ) &&
-			is_numeric( $arrRawResponse[ 'status' ] ) &&
 			200 == $arrRawResponse[ 'status' ] )
 		{
 			$arrJson = @ json_decode( $arrRawResponse[ 'data' ], true );
@@ -150,12 +149,21 @@ class CRequest extends CVData
 			}
 			else
 			{
-				$nErrorId = CConst::ERROR_JSON;
+				$nErrorId	= CConst::ERROR_JSON;
+				$sErrorDesc	= 'invalid vdata json';
 			}
 		}
 		else
 		{
 			$nErrorId = CConst::ERROR_NETWORK;
+			if ( $this->IsValidRawResponse( $arrRawResponse ) )
+			{
+				$sErrorDesc	= sprintf( "error in network, HTTP status %d.", $arrRawResponse[ 'status' ] );
+			}
+			else
+			{
+				$sErrorDesc	= "error in network, status=%d.";
+			}
 		}
 
 		//
