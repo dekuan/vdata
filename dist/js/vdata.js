@@ -190,6 +190,10 @@ function CVDataCore()
 				cache		: false,
 				async		: bASync,
 				timeout		: nTimeout,
+				xhrFields:
+				{
+					withCredentials : true
+				},
 				beforeSend	: function( oJqXHR, oSettings )
 				{
 				},
