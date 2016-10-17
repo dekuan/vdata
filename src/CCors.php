@@ -69,7 +69,7 @@ class CCors
 		$bRet	= false;
 
 		//	...
-		$sRefHost = $this->_GetRefererHost();
+		$sRefHost = $this->GetRefererHost();
 		if ( is_string( $sRefHost ) )
 		{
 			$nRefHostLen = strlen( $sRefHost );
@@ -99,11 +99,7 @@ class CCors
 		return $bRet;
 	}
 
-
-	////////////////////////////////////////////////////////////////////////////////
-	//	Private
-	//
-	protected function _GetRefererHost()
+	public function GetRefererHost( $bWithScheme = false )
 	{
 		$sRet	= '';
 
@@ -117,15 +113,28 @@ class CCors
 			{
 				$arrUrl	= @ parse_url( $sReferer );
 				if ( is_array( $arrUrl ) &&
+					array_key_exists( 'scheme', $arrUrl ) &&
 					array_key_exists( 'host', $arrUrl ) )
 				{
-					$sRefHost = $arrUrl['host'];
-					if ( is_string( $sRefHost ) )
+					$sRefScheme	= $arrUrl['scheme'];
+					$sRefHost	= $arrUrl['host'];
+					if ( is_string( $sRefScheme ) &&
+						is_string( $sRefHost ) )
 					{
 						//
 						//	...
 						//
-						$sRet = strtolower( trim( $sRefHost ) );
+						$sRet = sprintf
+						(
+							"%s%s",
+							(
+								$bWithScheme ?
+								sprintf( "%s://", $sRefScheme )
+								:
+								''
+							),
+							strtolower( trim( $sRefHost ) )
+						);
 					}
 				}
 			}
