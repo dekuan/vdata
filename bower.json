@@ -1,11 +1,11 @@
 {
 	"name"		: "vdata",
-	"homepage"	: "https://github.com/dekuan/vdata",
+	"homepage"	: "http://vdata.dekuan.org/",
 	"authors"	:
 	[
 		"liuqixing <liuqixing@dekuan.org>"
 	],
-	"description"	: "JavaScript client of VDATA protocol. VDATA protocol is the best protocol for calling or responding a HTTP/HTTPS service.",
+	"description"	: "JavaScript client of vdata protocol. vdata protocol is the best protocol for calling or responding a HTTP/HTTPS service.",
 	"main"		:
 	[
 		"vdata.js"
@@ -32,7 +32,7 @@
 		"karma.conf.js",
 		"mocha.opts",
 		"package.json",
-		"dist/js/vdata.independent.js"
+		"dist/js/independent/vdata.js"
 	],
 	"dependencies":
 	{

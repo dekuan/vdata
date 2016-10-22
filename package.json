@@ -3,8 +3,8 @@
 	"version"	: "1.0.7",
 	"author"	: "Liu QiXing <liuqixing@dekuan.org>",
 	"description"	: "JavaScript client of VDATA protocol. VDATA protocol is the best protocol for calling or responding a HTTP/HTTPS service.",
-	"homepage"	: "https://github.com/dekuan/vdata",
-	"main"		: "dist/js/vdata.js",
+	"homepage"	: "http://vdata.dekuan.org/",
+	"main"		: "vdata.js",
 	"license"	: "MIT",
 	"repository"	:
 	{
@@ -52,7 +52,7 @@
 		"karma.conf.js",
 		"mocha.opts",
 		"package.json",
-		"dist/js/vdata.independent.js"
+		"dist/js/independent/vdata.js"
 	],
 	"engines":
 	{
