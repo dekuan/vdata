@@ -58,6 +58,9 @@ class CConst
 	//
 	const ERROR_SUCCESS			= 0;            //      successfully
 
+	const ERROR_PROJECT_START		= 1000000;	//	start of project error id
+	const ERROR_PROJECT_END			= 9900000;	//	end of project error id
+
 	const ERROR_USER_START			= 10000;	//	start of user customized error id
 	const ERROR_USER_END			= 99999;	//	end of user customized error id
 
