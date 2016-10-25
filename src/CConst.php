@@ -58,11 +58,11 @@ class CConst
 	//
 	const ERROR_SUCCESS			= 0;            //      successfully
 
-	const ERROR_PROJECT_START		= 1000000;	//	start of project error id
+	const ERROR_PROJECT_START		=  100000;	//	start of project error id
 	const ERROR_PROJECT_END			= 9900000;	//	end of project error id
 
-	const ERROR_USER_START			= 10000;	//	start of user customized error id
-	const ERROR_USER_END			= 99999;	//	end of user customized error id
+	const ERROR_USER_START			=   10000;	//	start of user customized error id
+	const ERROR_USER_END			=   99999;	//	end of user customized error id
 
 	const ERROR_UNKNOWN			= -100000;      //      unknown errors
 	const ERROR_ACCESS_DENIED		= -100001;      //      access denied
@@ -127,6 +127,49 @@ class CConst
 				self::SOURCE_PC == $nVal ||		//	PC
 				self::SOURCE_MGR_SYSTEM == $nVal	//	management system
 			));
+	}
+
+	//
+	//	Get project start id
+	//
+	static function GetProjectStart( $nProjectId )
+	{
+		//
+		//	nProjectId	- [in] project must be a number from 1 to 99
+		//	RETURN		- project start or 0 on failure.
+		//
+		if ( ! is_numeric( $nProjectId ) ||
+			$nProjectId < 1 || $nProjectId > 99 )
+		{
+			return 0;
+		}
+
+		return ( intval( $nProjectId ) * 100000 );
+	}
+	static function IsValidProjectStart( $nProjectStart )
+	{
+		//
+		//	nProjectId	- [in] project must be a number from 1 to 99
+		//	RETURN		- true / false
+		//
+		if ( ! is_numeric( $nProjectStart ) )
+		{
+			return false;
+		}
+
+		//	...
+		$bRet	= false;
+
+		for ( $i = 1; $i < 100; $i ++ )
+		{
+			if ( $nProjectStart === self::GetProjectStart( $i ) )
+			{
+				$bRet	= true;
+				break;
+			}
+		}
+
+		return $bRet;
 	}
 }
 
