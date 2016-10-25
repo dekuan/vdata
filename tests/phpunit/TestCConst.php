@@ -23,6 +23,16 @@ require_once( __DIR__ . "/../../src/CRemote.php");
 use dekuan\vdata\CConst;
 
 
+
+class CConstTest1
+{
+	const ERROR_PROJECT_ID		= 1;
+	const ERROR_PROJECT_BASE	= CConst::ERROR_PROJECT_START * self::ERROR_PROJECT_ID + CConst::ERROR_USER_START;
+
+	const ERROR_USER_DDD		= self::ERROR_PROJECT_BASE + 1;
+}
+
+
 /**
  * Created by PhpStorm.
  * User: xing
@@ -31,64 +41,13 @@ use dekuan\vdata\CConst;
  */
 class TestCConst extends PHPUnit_Framework_TestCase
 {
-	public function testProjectId()
-	{
-		$arrData	=
-			[
-				[ true,		1 ],
-				[ true,		55 ],
-				[ true,		99 ],
-				[ false,	0 ],
-				[ false,	-1 ],
-				[ false,	null ],
-				[ false,	[] ],
-				[ false,	"" ],
-			];
-		foreach ( $arrData as $arrItem )
-		{
-			$nProjectStart	= CConst::GetProjectStart( $arrItem[ 1 ] );
-			$bResult	= ( $arrItem[ 0 ] == CConst::IsValidProjectStart( $nProjectStart ) );
-
-			//	...
-			echo __FUNCTION__ . " :: ";
-			echo ( $bResult ? "[OK]" : "[ER]" );
-			echo "\t$nProjectStart\t";
-			echo ( is_numeric( $arrItem[ 1 ] ) ? $arrItem[ 1 ] : "NULL" );
-			echo "\r\n";
-
-			$this->assertTrue( $bResult );
-		}
-	}
-
-	public function testProjectStarts()
-	{
-		echo "\r\n";
-
-		for ( $i = 1; $i < 100; $i ++ )
-		{
-			$nProjectStart	= CConst::GetProjectStart( $i );
-			$bResult	= CConst::IsValidProjectStart( $nProjectStart );
-
-			//	...
-			echo __FUNCTION__ . " :: ";
-			echo ( $bResult ? "[OK]" : "[ER]" );
-			echo "\t$nProjectStart";
-			echo "\r\n";
-
-			$this->assertTrue( $bResult );
-		}
-	}
-
 	public function testUserCustomizedErrorIds()
 	{
 		echo "\r\n";
 
-		$nProjectStart	= CConst::GetProjectStart( 20 );
-
 		$arrData	=
 			[
-				$nProjectStart + CConst::ERROR_USER_START + 100,
-				$nProjectStart + CConst::ERROR_USER_START + 101,
+				CConstTest1::ERROR_USER_DDD,
 			];
 
 		print_r( $arrData );
