@@ -1,1 +1,0 @@
-../../dist/js/vdata.js

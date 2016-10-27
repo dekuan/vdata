@@ -118,6 +118,8 @@ class CCors
 				{
 					$sRefScheme	= $arrUrl['scheme'];
 					$sRefHost	= $arrUrl['host'];
+					$nPort		= array_key_exists( 'port', $arrUrl ) ? intval( $arrUrl[ 'port' ] ) : 80;
+
 					if ( is_string( $sRefScheme ) &&
 						is_string( $sRefHost ) )
 					{
@@ -126,14 +128,20 @@ class CCors
 						//
 						$sRet = sprintf
 						(
-							"%s%s",
+							"%s%s%s",
 							(
 								$bWithScheme ?
-								sprintf( "%s://", $sRefScheme )
-								:
-								''
+									sprintf( "%s://", $sRefScheme )
+									:
+									''
 							),
-							strtolower( trim( $sRefHost ) )
+							strtolower( trim( $sRefHost ) ),
+							(
+								( $bWithScheme && 80 != $nPort ) ?
+									sprintf( ":%d", $nPort )
+									:
+									''
+							)
 						);
 					}
 				}
