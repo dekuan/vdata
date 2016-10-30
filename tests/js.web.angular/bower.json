@@ -1,11 +1,11 @@
 {
-	"name": "angular-author",
-	"description": "A awesome website for author from xs.cn.",
-	"version": "0.0.0",
-	"homepage": "https://author.xs.cn/",
-	"license": "MIT",
-	"private": true,
-	"dependencies":
+	"name"		: "vdata works with angular",
+	"description"	: "Awesome testing code for vdata of angular edition.",
+	"version"	: "1.0.0",
+	"homepage"	: "http://vdata.dekuan.org/",
+	"license"	: "MIT",
+	"private"	: true,
+	"dependencies"	:
 	{
 		"angular": "1.5.x"
 	}

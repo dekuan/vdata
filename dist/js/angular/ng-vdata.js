@@ -227,18 +227,12 @@ angular.module
 					timeout		: this.GetSafeTimeout( nTimeout ),	//	timeout in milliseconds
 					headers		: oHeader
 				};
-				if ( bUpdateRequest )
-				{
-					//	POST, PUT, DELETE
-					oSettings = angular.extend( {}, oSettings, { data : oData } );
-				}
-				else
-				{
-					//	GET
-					oSettings = angular.extend( {}, oSettings, { params : oData } );
-				}
 
-				//console.log( oSettings );
+				//
+				//	GET
+				//	POST, PUT, DELETE
+				//
+				oSettings = angular.extend( {}, oSettings, { params : oData } );
 
 				try
 				{

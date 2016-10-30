@@ -3,5 +3,7 @@
 /node_modules/
 /bower_components
 /tests/js.web.angular/bower_components
+/tests/js.web.jquery/bower_components
 composer.lock
 npm-debug.log
+/releasejs.sh

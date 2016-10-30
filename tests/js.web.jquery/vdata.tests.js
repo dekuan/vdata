@@ -86,7 +86,7 @@ describe( "vdata", function()
 				{
 					'url'	: 'http://www-loc.dekuan.org/api/vdata/',
 					'async'	: false,
-					'data'	: { 'g1' : 2, 'g2' : 3 }
+					'data'	: { 'get1' : 2, 'get2' : 3 }
 				},
 				function( oResponse )
 				{
@@ -103,7 +103,7 @@ describe( "vdata", function()
 				{
 					'url'	: 'http://www-loc.dekuan.org/api/vdata/',
 					'async'	: false,
-					'data'	: { 'ppp1' : 2, 'ppp2' : 3 }
+					'data'	: { 'post1' : 2, 'post2' : 3 }
 				},
 				function( oResponse )
 				{

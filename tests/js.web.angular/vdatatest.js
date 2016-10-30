@@ -21,7 +21,7 @@ angular.module( "cpApp", [ 'vdata' ], function( $interpolateProvider )
 			{
 				'url'	: 'http://www-loc.dekuan.org/api/vdata/',
 				'async'	: false,
-				'data'	: { 'g1' : 2, 'g2' : 3 }
+				'data'	: { 'get1' : 2, 'get2' : 3 }
 			},
 			function( oResponse )
 			{
@@ -41,7 +41,7 @@ angular.module( "cpApp", [ 'vdata' ], function( $interpolateProvider )
 			{
 				'url'	: 'http://www-loc.dekuan.org/api/vdata/',
 				'async'	: false,
-				'data'	: { 'ppp1' : 2, 'ppp2' : 3 }
+				'data'	: { 'post1' : 99, 'post2' : 200 }
 			},
 			function( oResponse )
 			{
