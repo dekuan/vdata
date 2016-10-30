@@ -1,0 +1,12 @@
+{
+	"name"		: "vdata works with angular",
+	"description"	: "Awesome testing code for vdata of angular edition.",
+	"version"	: "1.0.0",
+	"homepage"	: "http://vdata.dekuan.org/",
+	"license"	: "MIT",
+	"private"	: true,
+	"dependencies"	:
+	{
+		"angular": "1.5.x"
+	}
+}

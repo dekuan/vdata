@@ -58,6 +58,20 @@ class CConst
 	//
 	const ERROR_SUCCESS			= 0;            //      successfully
 
+	//
+	//	define a customized error id:
+	//
+	//	1, define id for this project
+	//	   project id might be:
+	//	   1, 2, 3 ... 99
+	//	const ERROR_PROJECT_ID		= 1;
+	//
+	//	2, define the start number of error id for whole project
+	//	const ERROR_PROJECT_BASE	= CConst::ERROR_PROJECT_START * self::ERROR_PROJECT_ID + CConst::ERROR_USER_START;
+	//
+	//	const ERROR_USER_XXX1		= self::ERROR_PROJECT_BASE + 1;
+	//
+	//
 	const ERROR_PROJECT_START		=  100000;	//	start of project error id
 	const ERROR_PROJECT_END			= 9900000;	//	end of project error id
 
@@ -127,49 +141,6 @@ class CConst
 				self::SOURCE_PC == $nVal ||		//	PC
 				self::SOURCE_MGR_SYSTEM == $nVal	//	management system
 			));
-	}
-
-	//
-	//	Get project start id
-	//
-	static function GetProjectStart( $nProjectId )
-	{
-		//
-		//	nProjectId	- [in] project must be a number from 1 to 99
-		//	RETURN		- project start or 0 on failure.
-		//
-		if ( ! is_numeric( $nProjectId ) ||
-			$nProjectId < 1 || $nProjectId > 99 )
-		{
-			return 0;
-		}
-
-		return ( intval( $nProjectId ) * 100000 );
-	}
-	static function IsValidProjectStart( $nProjectStart )
-	{
-		//
-		//	nProjectId	- [in] project must be a number from 1 to 99
-		//	RETURN		- true / false
-		//
-		if ( ! is_numeric( $nProjectStart ) )
-		{
-			return false;
-		}
-
-		//	...
-		$bRet	= false;
-
-		for ( $i = 1; $i < 100; $i ++ )
-		{
-			if ( $nProjectStart === self::GetProjectStart( $i ) )
-			{
-				$bRet	= true;
-				break;
-			}
-		}
-
-		return $bRet;
 	}
 }
 

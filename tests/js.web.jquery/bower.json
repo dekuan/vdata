@@ -1,0 +1,12 @@
+{
+	"name"		: "vdata works with jQuery",
+	"description"	: "Awesome testing code for vdata of jQuery edition.",
+	"version"	: "1.0.0",
+	"homepage"	: "http://vdata.dekuan.org/",
+	"license"	: "MIT",
+	"private"	: true,
+	"dependencies"	:
+	{
+		"jquery": "1.11.x"
+	}
+}

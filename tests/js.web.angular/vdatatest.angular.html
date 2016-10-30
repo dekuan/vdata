@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>test for vdata.angular</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="keywords" content="test for vdata.angular">
+	<meta name="description" content="test for vdata.angular">
+	<meta name="format-detection" content="telephone=no,email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+
+	<link href="style.css" rel="stylesheet" type="text/css" ladep="1">
+
+	<script type="text/javascript" src="bower_components/angular/angular.js" ladep="1"></script>
+	<script type="text/javascript" src="chai.js" ladep="1"></script>
+	<script type="text/javascript" src="mocha.js" ladep="1"></script>
+
+	<script>
+		mocha.setup('bdd');
+	</script>
+
+
+	<script type="text/javascript" src="ng-vdata.min.js" ladep="1"></script>
+	<script type="text/javascript" src="vdatatest.js" ladep="1"></script>
+
+</head>
+
+<body id="body"
+	  ng-app="cpApp"
+	  ng-controller="vdataTest">
+
+	<button ng-click="SendGetRequest()" >SendGetRequest</button>
+	<br />
+	<button ng-click="SendPostRequest()" >SendPostRequest</button>
+
+
+</body>
+
+</html>

@@ -84,8 +84,9 @@ describe( "vdata", function()
 			VDATA.Get
 			(
 				{
-					'url'	: 'http://www.dekuan.org/api/vdata/',
-					'async'	: false
+					'url'	: 'http://www-loc.dekuan.org/api/vdata/',
+					'async'	: false,
+					'data'	: { 'get1' : 2, 'get2' : 3 }
 				},
 				function( oResponse )
 				{
@@ -100,8 +101,9 @@ describe( "vdata", function()
 			VDATA.Post
 			(
 				{
-					'url'	: 'http://www.dekuan.org/api/vdata/',
-					'async'	: false
+					'url'	: 'http://www-loc.dekuan.org/api/vdata/',
+					'async'	: false,
+					'data'	: { 'post1' : 2, 'post2' : 3 }
 				},
 				function( oResponse )
 				{
