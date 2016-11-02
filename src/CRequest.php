@@ -29,6 +29,7 @@ class CRequest extends CVData
 	const ERROR_NETWORK_PARAMETER			= CConst::ERROR_USER_START + 3;
 	const ERROR_NETWORK_REQUEST_METHOD		= CConst::ERROR_USER_START + 4;
 	const ERROR_NETWORK_HTTP_STATUS			= CConst::ERROR_USER_START + 5;
+	const ERROR_NETWORK_HTTP_HEADER			= CConst::ERROR_USER_START + 6;
 
 	const ERROR_INVALID_HTTP_HEADER			= CConst::ERROR_USER_START + 100;
 	const ERROR_INVALID_SERVER_ADDR_EMPTY		= CConst::ERROR_USER_START + 110;
@@ -237,16 +238,17 @@ class CRequest extends CVData
 		];
 		$sResponse	= '';
 		$nHttpStatus	= 0;
+		$arrHttpHeaders	= [];
 
 		//
 		//	send http request
 		//
-		$nRet = $this->_HttpSendRequest( $arrRequestData, $nTimeout, $sResponse, $nHttpStatus );
+		$nRet = $this->_HttpSendRequest( $arrRequestData, $nTimeout, $sResponse, $nHttpStatus, $arrHttpHeaders );
 		$arrRawResponseReturn =
 			[
 				'data'		=> $sResponse,
 				'status'	=> $nHttpStatus,
-				'headers'	=> [],
+				'headers'	=> ( is_array( $arrHttpHeaders ) ? $arrHttpHeaders : [] ),
 			];
 
 		return $nRet;
@@ -254,7 +256,8 @@ class CRequest extends CVData
 	public function IsValidRawResponse( $arrData )
 	{
 		return ( CLib::IsArrayWithKeys( $arrData, [ 'data', 'status', 'headers' ] ) &&
-			is_numeric( $arrData[ 'status' ] ) );
+			is_numeric( $arrData[ 'status' ] ) &&
+			is_array( $arrData[ 'headers' ] ) );
 	}
 
 
@@ -299,7 +302,7 @@ class CRequest extends CVData
 		return ( isset( $oCUrl ) && false !== $oCUrl && is_resource( $oCUrl ) );
 	}
 
-	private function _HttpSendRequest( $arrRequest, $nTimeout = 5, & $sResponse = null, & $nHttpStatus = 0 )
+	private function _HttpSendRequest( $arrRequest, $nTimeout = 5, & $sResponseBody = null, & $nHttpCode = 0, & $arrHttpHeaders = [] )
 	{
 		if ( ! function_exists( 'curl_init' ) )
 		{
@@ -413,6 +416,8 @@ class CRequest extends CVData
 
 			//	return the transfer as a string instead of outputting it out directly.
 			curl_setopt( $oCUrl, CURLOPT_RETURNTRANSFER, true );
+			//curl_setopt( $oCUrl, CURLOPT_VERBOSE, true );
+			curl_setopt( $oCUrl, CURLOPT_HEADER, true );
 
 			//	set timeout
 			curl_setopt( $oCUrl, CURLOPT_TIMEOUT, $nTimeout );
@@ -434,20 +439,26 @@ class CRequest extends CVData
 			//
 			//	send request and set return buffer
 			//
-			$sResponse	= curl_exec( $oCUrl );
-			$arrStatus	= curl_getinfo( $oCUrl );
+			$sResponse		= curl_exec( $oCUrl );
+			$sResponseHeader	= '';
+			$sResponseBody		= '';
+
+			//	...
+			$nHttpCode	= curl_getinfo( $oCUrl, CURLINFO_HTTP_CODE );
+			$nHeaderSize	= curl_getinfo( $oCUrl, CURLINFO_HEADER_SIZE );
 
 			//	close curl
 			curl_close( $oCUrl );
 			$oCUrl = null;
 
 			//	...
-			if ( CLib::IsArrayWithKeys( $arrStatus, 'http_code' ) )
+			if ( $nHeaderSize > 0 )
 			{
-				//	...
-				$nHttpStatus = intval( $arrStatus[ 'http_code' ] );
+				$sResponseHeader	= substr( $sResponse, 0, $nHeaderSize );
+				$sResponseBody		= substr( $sResponse, $nHeaderSize );
+				$arrHttpHeaders		= $this->_ParseHttpHeaders( $sResponseHeader );
 
-				if ( 200 == $nHttpStatus )
+				if ( 200 == $nHttpCode )
 				{
 					//	successfully
 					$nRet = CConst::ERROR_SUCCESS;
@@ -459,7 +470,8 @@ class CRequest extends CVData
 			}
 			else
 			{
-				$nRet = self::ERROR_NETWORK_HTTP_STATUS;
+				//	error in http header
+				$nRet = self::ERROR_NETWORK_HTTP_HEADER;
 			}
 		}
 		else
@@ -773,5 +785,44 @@ class CRequest extends CVData
 		return $bRet;
 	}
 
+	function _ParseHttpHeaders( $sRawHeader )
+	{
+		if ( ! CLib::IsExistingString( $sRawHeader, true ) )
+		{
+			return [];
+		}
+
+		//	...
+		$arrRet	= [];
+
+		//	...
+		$sRawHeader	= trim( $sRawHeader );
+		$arrHeader	= explode( "\r\n", $sRawHeader );
+		if ( CLib::IsArrayWithKeys( $arrHeader ) )
+		{
+			foreach ( $arrHeader as $sLine )
+			{
+				$sLine		= trim( $sLine, "\r\n\t " );
+				$arrLine	= explode( ':', $sLine, 2 );
+				if ( is_array( $arrLine ) && 2 == count( $arrLine ) &&
+					CLib::IsExistingString( $arrLine[ 0 ], true ) &&
+					CLib::IsExistingString( $arrLine[ 1 ], true ) )
+				{
+					$sKey	= trim( $arrLine[ 0 ], "\r\n\t " );
+					$sVal	= trim( $arrLine[ 1 ], "\r\n\t " );
+
+					//	...
+					if ( CLib::IsExistingString( $sKey ) &&
+						CLib::IsExistingString( $sVal ) )
+					{
+						$arrRet[ $sKey ] = $sVal;
+					}
+				}
+			}
+
+		}
+
+		return $arrRet;
+	}
 }
 
