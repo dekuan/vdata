@@ -1,18 +1,18 @@
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
-require __DIR__ . '/../../src/CConst.php';
-require __DIR__ . '/../../src/CCors.php';
-require __DIR__ . '/../../src/CVData.php';
-require __DIR__ . '/../../src/CRequest.php';
-require __DIR__ . '/../../src/CResponse.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
 
+require_once __DIR__ . '/../../src/CConst.php';
+require_once __DIR__ . '/../../src/CCors.php';
+require_once __DIR__ . '/../../src/CVData.php';
+require_once __DIR__ . '/../../src/CRequest.php';
+require_once __DIR__ . '/../../src/CResponse.php';
 
 
 use dekuan\vdata\CConst;
 use dekuan\vdata\CRequest;
-
+use dekuan\delib\CLib;
 
 
 
@@ -38,8 +38,7 @@ class TestRequestRaw extends PHPUnit_Framework_TestCase
 				'url'		=> "http://127.0.0.1:9916",
 				'headers'	=>
 					[
-						'X-AVOSCloud-Application-Id'	=> 'vX7Lx591UGgJAa5yXJFKyKBL-gzGzoHsz',
-						'X-AVOSCloud-Application-Key'	=> 'P8U7gF46Nc4YVJwP06jsELoa',
+						'X-Application-Id'	=> '99999-88888',
 					],
 			],
 			$arrResp
@@ -54,4 +53,6 @@ class TestRequestRaw extends PHPUnit_Framework_TestCase
 		}
 
 	}
+
+
 }
