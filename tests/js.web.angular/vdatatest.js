@@ -19,13 +19,30 @@ angular.module( "cpApp", [ 'vdata' ], function( $interpolateProvider )
 		nCall	= vdataFactory.Get
 		(
 			{
-				'url'	: 'http://www-loc.dekuan.org/api/vdata/',
+				'url'	: 'http://vdata.dekuan.org/api/vdata/',
 				'async'	: false,
-				'data'	: { 'get1' : 2, 'get2' : 3 }
+				'data'	: { 'get_hour' : (new Date).getHours(), 'get2' : 3 }
 			},
-			function( oResponse )
+			function( oJsonData )
 			{
-				console.log( oResponse );
+				console.log( oJsonData );
+
+				if ( vdataConst.ERROR.SUCCESS == oJsonData['errorid'] )
+				{
+					//  successfully
+				}
+				else if ( vdataConst.ERROR.NETWORK == oJsonData['errorid'] )
+				{
+					//	network
+				}
+				else if ( vdataConst.ERROR.EXCEPTION == oJsonData['errorid'] )
+				{
+					//	exception
+				}
+				else
+				{
+					//  some cases else
+				}
 			}
 		);
 
@@ -39,13 +56,30 @@ angular.module( "cpApp", [ 'vdata' ], function( $interpolateProvider )
 		nCall	= vdataFactory.Post
 		(
 			{
-				'url'	: 'http://www-loc.dekuan.org/api/vdata/',
+				'url'	: 'http://vdata.dekuan.org/api/vdata/',
 				'async'	: false,
-				'data'	: { 'post1' : 99, 'post2' : 200 }
+				'data'	: { 'post_hour' : (new Date).getHours(), 'post2' : 200 }
 			},
-			function( oResponse )
+			function( oJsonData )
 			{
-				console.log( oResponse );
+				console.log( oJsonData );
+
+				if ( vdataConst.ERROR.SUCCESS == oJsonData['errorid'] )
+				{
+					//  successfully
+				}
+				else if ( vdataConst.ERROR.NETWORK == oJsonData['errorid'] )
+				{
+					//	network
+				}
+				else if ( vdataConst.ERROR.EXCEPTION == oJsonData['errorid'] )
+				{
+					//	exception
+				}
+				else
+				{
+					//  some cases else
+				}
 			}
 		);
 
