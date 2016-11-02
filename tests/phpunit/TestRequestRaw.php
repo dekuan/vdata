@@ -36,6 +36,11 @@ class TestRequestRaw extends PHPUnit_Framework_TestCase
 			[
 				'method'	=> 'GET',
 				'url'		=> "http://127.0.0.1:9916",
+				'headers'	=>
+					[
+						'X-AVOSCloud-Application-Id'	=> 'vX7Lx591UGgJAa5yXJFKyKBL-gzGzoHsz',
+						'X-AVOSCloud-Application-Key'	=> 'P8U7gF46Nc4YVJwP06jsELoa',
+					],
 			],
 			$arrResp
 		);
