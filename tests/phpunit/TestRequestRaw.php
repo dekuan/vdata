@@ -42,7 +42,10 @@ class TestRequestRaw extends PHPUnit_Framework_TestCase
 		if ( CConst::ERROR_SUCCESS == $nCall &&
 			$cRequest->IsValidRawResponse( $arrResp ) )
 		{
-			var_dump( $arrResp[ 'status' ], $arrResp[ 'headers' ] );
+			echo "HTTP Status: " . $arrResp[ 'status' ] . "\r\n";
+			print_r( $arrResp[ 'headers' ] );
+
+			var_dump( $arrResp[ 'data' ] );
 		}
 
 	}
