@@ -227,6 +227,7 @@ class CRequest extends CVData
 		//	array or string
 		$arrCookie	= array_key_exists( 'cookie', $arrParam ) ? $arrParam[ 'cookie' ] : '';
 		$sVersion	= CLib::GetValEx( $arrParam, 'version', CLib::VARTYPE_STRING, self::DEFAULT_VERSION );
+		$arrHeaders	= array_key_exists( 'headers', $arrParam ) ? $arrParam[ 'headers' ] : [];
 
 		$arrRequestData	=
 		[
@@ -235,6 +236,7 @@ class CRequest extends CVData
 			'data'		=> $arrData,
 			'cookie'	=> $arrCookie,	//	array or string are both okay
 			'version'	=> $sVersion,
+			'headers'	=> $arrHeaders,
 		];
 		$sResponse	= '';
 		$nHttpStatus	= 0;
@@ -269,6 +271,7 @@ class CRequest extends CVData
 	{
 		$this->m_arrHeaders	= [];
 	}
+
 	private function _AppendHeader( $sName, $sValue )
 	{
 		if ( ! CLib::IsExistingString( $sName, true ) )
@@ -276,9 +279,19 @@ class CRequest extends CVData
 			return false;
 		}
 
-		$this->m_arrHeaders[ $sName ] = $sValue;
-		return true;
+		$bRet	= false;
+		$sName	= trim( $sName );
+		$sValue	= trim( $sValue );
+
+		if ( CLib::IsExistingString( $sName ) && CLib::IsExistingString( $sValue ) )
+		{
+			$bRet = true;
+			$this->m_arrHeaders[ $sName ] = $sValue;
+		}
+
+		return $bRet;
 	}
+
 	private function _GetHeadersList()
 	{
 		$arrRet	= [];
@@ -325,6 +338,7 @@ class CRequest extends CVData
 		//	array or string
 		$arrCookie	= array_key_exists( 'cookie', $arrRequest ) ? $arrRequest['cookie'] : '';
 		$sVersion	= array_key_exists( 'version', $arrRequest ) ? $arrRequest['version'] : '';
+		$arrHeaders	= array_key_exists( 'headers', $arrRequest ) ? $arrRequest['headers'] : [];
 
 		if ( ! $this->_IsValidMethod( $sMethod ) )
 		{
@@ -397,6 +411,20 @@ class CRequest extends CVData
 				curl_setopt( $oCUrl, CURLOPT_COOKIE, $arrCookie );
 			}
 
+			//
+			//	user customized header
+			//
+			if ( is_array( $arrHeaders ) && count( $arrHeaders ) > 0 )
+			{
+				foreach ( $arrHeaders as $sUHKey => $sUHVal )
+				{
+					$this->_AppendHeader( $sUHKey, $sUHVal );
+				}
+			}
+
+			//
+			//	version by the filed "Accept"
+			//
 			if ( is_string( $sVersion ) && strlen( $sVersion ) > 0 )
 			{
 				$sVersion	= str_replace( '+', '', trim( $sVersion ) );
