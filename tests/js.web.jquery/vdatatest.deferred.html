@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mocha test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mocha.css" />
+</head>
+<body>
+<div id="mocha"></div>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script>
+function CXObj()
+{
+	//	The jQuery.Deferred() factory creates a new deferred object.
+	var m_oDeferred	= jQuery.Deferred();
+
+	this.Post = function( sUrl, oData )
+	{
+		var jqXHR	=
+		{
+			abc : function()
+			{
+				alert( 'abc' );
+			}
+		};
+
+		window.setTimeout
+		(
+			function()
+			{
+				var nTime = (new Date()).getTime();
+				if ( 0 == nTime % 2 )
+				{
+					m_oDeferred.resolve( (new Date()).getTime() );
+				}
+				else
+				{
+					m_oDeferred.reject( (new Date()).getTime() );
+				}
+			},
+			1000
+		);
+
+		return m_oDeferred.promise( jqXHR );
+	};
+
+}
+
+(new CXObj()).Post( "url", {} )
+.done( function( nErrorId )
+{
+	console.log( "CXObj done with code " + nErrorId );
+})
+.fail(function( nErrorId )
+{
+	console.log( "CXObj fail with code " + nErrorId );
+});
+
+
+
+</script>
+</body>
+</html>

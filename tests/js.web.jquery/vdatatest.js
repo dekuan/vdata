@@ -81,7 +81,7 @@ describe( "vdata", function()
 
 		it ( "`Get` method should return an vdata object, see console of browser", function()
 		{
-			VDATA.Get
+			var vCall = VDATA.Get
 			(
 				{
 					'url'	: 'http://vdata.dekuan.org/api/vdata/',
@@ -94,11 +94,13 @@ describe( "vdata", function()
 					expect( typeof( oResponse ) ).to.equal( 'object' );
 				}
 			);
+
+			console.log( "Call `Get` = " + vCall );
 		});
 
 		it ( "`Post` method should return an vdata object, see console of browser", function()
 		{
-			VDATA.Post
+			var vCall = VDATA.Post
 			(
 				{
 					'url'	: 'http://vdata.dekuan.org/api/vdata/',
@@ -111,6 +113,94 @@ describe( "vdata", function()
 					expect( typeof( oResponse ) ).to.equal( 'object' );
 				}
 			);
+
+			console.log( "Call `Post` = " + vCall );
+		});
+
+		//it ( "`Put` method should return an vdata object, see console of browser", function()
+		//{
+		//	//VDATA.Put
+		//	//(
+		//	//	{
+		//	//		'url'	: 'http://vdata-loc.dekuan.org/api/vdata/',
+		//	//		'async'	: true,
+		//	//		'data'	: { 'post1' : 2, 'post2' : 3 }
+		//	//	},
+		//	//	function( oResponse )
+		//	//	{
+		//	//		console.log( oResponse );
+		//	//		expect( typeof( oResponse ) ).to.equal( 'object' );
+		//	//	}
+		//	//);
+		//
+		//	$.ajax({
+		//		type: "PUT",
+		//		url: "http://vdata-loc.dekuan.org/api/vdata/",
+		//		data: "1",
+		//		crossDomain: true,
+		//		dataType: "json",
+		//		success: function ( sText )
+		//		{
+		//			console.log( sText );
+		//		}
+		//
+		//	});
+		//});
+
+
+
+
+
+		it ( "Deferred `Get` method should return an vdata object, see console of browser", function()
+		{
+			var vCall = VDATA.Get
+			(
+				{
+					'url'	: 'http://vdata.dekuan.org/api/vdata/',
+					'async'	: false,
+					'data'	: { 'get1' : 2, 'get2' : 3 }
+				}
+			)
+			.done( function( oResponse )
+			{
+				console.log( "done by calling Deferred `Get`" );
+				console.log( oResponse );
+				expect( typeof( oResponse ) ).to.equal( 'object' );
+			})
+			.fail( function( oResponse )
+			{
+				console.log( "fail by calling Deferred `Get`" );
+				console.log( oResponse );
+				expect( typeof( oResponse ) ).to.equal( 'object' );
+			});
+
+			console.log( "Call Deferred `Get` = " + vCall );
+		});
+
+		it ( "Deferred `Post` method should return an vdata object, see console of browser", function()
+		{
+			var vCall = VDATA.Post
+			(
+				{
+					'url'	: 'http://vdata.dekuan.org/api/vdata/',
+					'async'	: false,
+					'data'	: { 'post1' : 2, 'post2' : 3 }
+				}
+			)
+			.done( function( oResponse )
+			{
+				console.log( "done by calling Deferred `Post`" );
+				console.log( oResponse );
+				expect( typeof( oResponse ) ).to.equal( 'object' );
+			})
+			.fail( function( oResponse )
+			{
+				console.log( "fail by calling Deferred `Post`" );
+				console.log( oResponse );
+				expect( typeof( oResponse ) ).to.equal( 'object' );
+			});
+
+			console.log( "Call Deferred `Post` = " + vCall );
 		});
 	});
 
