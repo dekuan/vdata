@@ -71,7 +71,12 @@ function CVDataCore()
 	 */
 	this.Get = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
+		//
+		//	arrParam	- [in] object,		see .IsValidParam()
+		//	pfnCallback	- [opt] function,	undefined or function( oResponse ){}
+		//	RETURN		- error id or jQuery.Deferred if pfnCallback is undefined
+		//
+		if ( ! m_oThis.IsValidParam( arrParam ) )
 		{
 			return false;
 		}
@@ -87,7 +92,12 @@ function CVDataCore()
 	 */
 	this.Post = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
+		//
+		//	arrParam	- [in] object,		see .IsValidParam()
+		//	pfnCallback	- [opt] function,	undefined or function( oResponse ){}
+		//	RETURN		- error id or jQuery.Deferred if pfnCallback is undefined
+		//
+		if ( ! m_oThis.IsValidParam( arrParam ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -103,7 +113,12 @@ function CVDataCore()
 	 */
 	this.Put = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
+		//
+		//	arrParam	- [in] object,		see .IsValidParam()
+		//	pfnCallback	- [opt] function,	undefined or function( oResponse ){}
+		//	RETURN		- error id or jQuery.Deferred if pfnCallback is undefined
+		//
+		if ( ! m_oThis.IsValidParam( arrParam ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -119,7 +134,12 @@ function CVDataCore()
 	 */
 	this.Delete = function( arrParam, pfnCallback )
 	{
-		if ( ! m_oThis.IsValidParam( arrParam ) || ! m_cLib.IsFunction( pfnCallback ) )
+		//
+		//	arrParam	- [in] object,		see .IsValidParam()
+		//	pfnCallback	- [opt] function,	undefined or function( oResponse ){}
+		//	RETURN		- error id or jQuery.Deferred if pfnCallback is undefined
+		//
+		if ( ! m_oThis.IsValidParam( arrParam ) )
 		{
 			return VDATA.ERROR.PARAMETER;
 		}
@@ -136,11 +156,12 @@ function CVDataCore()
 	this.Http = function( arrParam, pfnCallback )
 	{
 		//
-		//	arrParam	- object,	see .IsValidParam()
-		//	pfnCallback	- function,	function( oResponse ){}
-		//	RETURN		- error id
+		//	arrParam	- [in] object,		see .IsValidParam()
+		//	pfnCallback	- [opt] function,	undefined or function( oResponse ){}
+		//	RETURN		- error id or jQuery.Deferred if pfnCallback is undefined
 		//
 		var nRet;
+		var oNewDeferred;
 		var sMethod;
 		var sUrl;
 		var oData;
@@ -150,13 +171,16 @@ function CVDataCore()
 		var oHeader;
 		var oResponse;
 
-		if ( ! m_oThis.IsValidParam( arrParam, true ) || ! m_cLib.IsFunction( pfnCallback ) )
+		if ( ! m_oThis.IsValidParam( arrParam, true ) )
 		{
-			return VDATA.ERROR.PARAMETER;
+			return m_cLib.IsFunction( pfnCallback ) ? VDATA.ERROR.PARAMETER : jQuery.Deferred().promise();
 		}
 
 		//	...
 		nRet = VDATA.ERROR.UNKNOWN;
+
+		//	The jQuery.Deferred() factory creates a new deferred object.
+		oNewDeferred = jQuery.Deferred();
 
 		//	...
 		sMethod		= m_oThis.GetSafeMethod( _GetSafeValue( arrParam, 'method', VDATA.CONST.DEFAULT_METHOD ) );
@@ -212,7 +236,17 @@ function CVDataCore()
 					//
 					//	call back
 					//
-					pfnCallback( oResponse );
+					if ( m_cLib.IsFunction( pfnCallback ) )
+					{
+						pfnCallback( oResponse );
+					}
+					else
+					{
+						//
+						//	call .done( function( oResponse ){ ... } )
+						//
+						oNewDeferred.resolve( oResponse );
+					}
 				},
 				error		: function( oJqXHR, sStatus, sErrorThrown )
 				{
@@ -233,7 +267,17 @@ function CVDataCore()
 					//
 					//	call back
 					//
-					pfnCallback( oResponse );
+					if ( m_cLib.IsFunction( pfnCallback ) )
+					{
+						pfnCallback( oResponse );
+					}
+					else
+					{
+						//
+						//	call .fail( function( oResponse ){ ... } )
+						//
+						oNewDeferred.reject( oResponse );
+					}
 				}
 			});
 
@@ -251,11 +295,21 @@ function CVDataCore()
 			//
 			//	call back
 			//
-			pfnCallback( oResponse );
+			if ( m_cLib.IsFunction( pfnCallback ) )
+			{
+				pfnCallback( oResponse );
+			}
+			else
+			{
+				//
+				//	call .fail( function( oResponse ){ ... } )
+				//
+				oNewDeferred.reject( oResponse );
+			}
 		}
 
 		//	...
-		return nRet;
+		return m_cLib.IsFunction( pfnCallback ) ? nRet : oNewDeferred.promise();
 	};
 
 	/**

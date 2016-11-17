@@ -89,6 +89,8 @@ class CConst
 	const ERROR_CREATE_INSTANCE		= -100010;      //      error in creating instance
 	const ERROR_EXCEPTION			= -100011;	//	error in exception
 
+	const ERROR_FAILED			= -100030;	//	failed
+
 	const ERROR_DB_SELECT			= -100050;	//	error in selecting database
 	const ERROR_DB_UPDATE			= -100051;	//	error in updating database
 	const ERROR_DB_INSERT			= -100052;	//	error in inserting database
@@ -98,10 +100,6 @@ class CConst
 	const ERROR_DB_TABLE_NAME		= -100065;	//	error in table name
 
 	const ERROR_REQUEST_VIA_IP		= -100100;	//	bad request via ip request
-
-	const ERROR_MO_NOT_ENOUGH_COINS		= -100200;	//	not enough coins
-	const ERROR_MO_HIRE_OVERDUE		= -100201;	//	the hiring date is overdue
-	const ERROR_MO_TRANSACTION_TYPE		= -100202;	//	error consume type
 
 	const ERROR_NETWORK			= -100300;	//	error network
 	const ERROR_JSON			= -100301;	//	error json

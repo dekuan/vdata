@@ -76,21 +76,41 @@ class CCors
 			if ( is_array( $this->m_arrCorsDomains ) &&
 				count( $this->m_arrCorsDomains ) > 0 )
 			{
-				foreach ( $this->m_arrCorsDomains as $sDomain )
+				foreach ( $this->m_arrCorsDomains as $sCfgDomain )
 				{
-					$nDmLength = strlen( $sDomain );
+					$nDmLength = strlen( $sCfgDomain );
 					if ( $nRefHostLen >= $nDmLength &&
-						0 == strcasecmp( $sDomain, substr( $sRefHost, -1 * $nDmLength ) ) )
+						0 == strcasecmp( $sCfgDomain, substr( $sRefHost, -1 * $nDmLength ) ) )
 					{
+						//
+						//	ref:	www.dekuan.org
+						//	cfg:	dekuan.org
+						//
 						$bRet = true;
 						break;
 					}
 					else if ( $nRefHostLen + 1 == $nDmLength &&
 						$nDmLength > 1 &&
-						0 == strcasecmp( $sRefHost, substr( $sDomain, 1 ) ) )
+						0 == strcasecmp( $sRefHost, substr( $sCfgDomain, 1 ) ) )
 					{
+						//
+						//	ref:	dekuan.org
+						//	cfg:	.dekuan.org
+						//
 						$bRet = true;
 						break;
+					}
+					else if ( strstr( $sCfgDomain, '*' ) )
+					{
+						if ( fnmatch( $sCfgDomain, $sRefHost ) )
+						{
+							//
+							//	ref:	msgsender.service.dekuan.org
+							//	cfg:	*.service.dekuan.org
+							//
+							$bRet = true;
+							break;
+						}
 					}
 				}
 			}
@@ -143,6 +163,7 @@ class CCors
 									''
 							)
 						);
+						$sRet = rtrim( $sRet, "/\\" );
 					}
 				}
 			}
