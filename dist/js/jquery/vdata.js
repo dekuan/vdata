@@ -196,7 +196,8 @@ function CVDataCore()
 		//	Request header
 		oHeader		=
 		{
-			"Accept"	: ( VDATA.CONST.HTTP_HEADER_VERSION_ACCEPT + sVersion )
+			"Accept"	: ( VDATA.CONST.HTTP_HEADER_VERSION_ACCEPT + sVersion ),
+			'X-CSRF-TOKEN'	: $( 'meta[name="csrf-token"]' ).attr( 'content' )
 		};
 
 		//	response
