@@ -93,7 +93,7 @@ class CVData
 		//
 		//	nErrorId	- [in] int		error id
 		//	sErrorDesc	- [in/opt] string	error description
-		//	arrVData	- [in/opt] array	virtual data
+		//	arrVData	- [in/opt] array/object	virtual data
 		//	sVersion	- [in/opt] string	service version, default is '1.0'
 		//	bCached		- [in/opt] bool		if the data come from cache
 		//	arrExtra	- [in/opt] array	extra data by key-value pairs
@@ -111,7 +111,7 @@ class CVData
 				[
 					'errorid'   => $nErrorId,
 					'errordesc' => $sErrorDesc,
-					'vdata'     => ( is_array( $arrVData ) ? $arrVData : [] ),
+					'vdata'     => ( ( is_array( $arrVData ) || is_object( $arrVData ) ) ? $arrVData : [] ),
 				];
 		}
 		else
