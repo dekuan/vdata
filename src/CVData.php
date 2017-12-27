@@ -11,9 +11,9 @@ class CVData
 {
 	protected static $g_cStaticVDataInstance;
 
-	//
-	//	constants
-	//
+	/**
+	 *	@constants
+	 */
 	const SERVICE_DEFAULT_NAME	= 'VDATA';		//	default service name
 	const SERVICE_DEFAULT_URL	= '';			//	default service url
 	const SERVICE_DEFAULT_VERSION	= '1.0';		//	default service version
@@ -22,9 +22,10 @@ class CVData
 	const ARR_RESERVED_KEYS		= [ 'name', 'url', 'errorid', 'errordesc', 'vdata', 'parents' ];
 
 
-	//
-	//	members
-	//
+
+	/**
+	 *	@members variables
+	 */
 	protected $m_cCors;
 	protected $m_sServiceName;
 	protected $m_sServiceUrl;
@@ -49,9 +50,12 @@ class CVData
 		return self::$g_cStaticVDataInstance;
 	}
 
-	//
-	//	set service name and url
-	//
+	/**
+	 *	set service name and url
+	 *
+	 *	@param	$sServiceName	string
+	 *	@return	boolean
+	 */
 	public function SetServiceName( $sServiceName )
 	{
 		$bRet	= false;
@@ -64,6 +68,13 @@ class CVData
 
 		return $bRet;
 	}
+
+	/**
+	 *	set service name and url
+	 *
+	 *	@param	$sUrl		string
+	 *	@return	boolean
+	 */
 	public function SetServiceUrl( $sUrl )
 	{
 		$bRet	= false;
@@ -77,9 +88,59 @@ class CVData
 		return $bRet;
 	}
 
-	//
-	//	get json in virtual data format
-	//
+
+	/**
+	 *	get error id from response VData array
+	 *
+	 *	@param 	$arrResponse	array
+	 *	@return	int
+	 */
+	public function GetResponseErrorId( $arrResponse )
+	{
+		return CLib::IsArrayWithKeys( $arrResponse, 'errorid' ) ? intval( $arrResponse[ 'errorid' ] ) : CConst::ERROR_UNKNOWN;
+	}
+
+	/**
+	 *	get error id from response VData array
+	 *
+	 *	@param 	$arrResponse	array
+	 *	@return	string
+	 */
+	public function GetResponseErrorDesc( $arrResponse )
+	{
+		return CLib::IsArrayWithKeys( $arrResponse, 'errordesc' ) ? trim( $arrResponse[ 'errordesc' ] ) : '';
+	}
+
+	/**
+	 *	get error id from response VData array
+	 *
+	 *	@param 	$arrResponse	array
+	 *	@return	mixed
+	 */
+	public function GetResponseVData( $arrResponse )
+	{
+		if ( CLib::IsArrayWithKeys( $arrResponse, 'vdata' ) || CLib::IsObjectWithProperties( $arrResponse, 'vdata' ) )
+		{
+			return $arrResponse[ 'vdata' ];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+
+	/**
+	 *	get json in virtual data format
+	 *
+	 *	@param	$nErrorId	int
+	 *	@param	$sErrorDesc	string
+	 *	@param	$arrVData	array
+	 *	@param	$sVersion	string
+	 *	@param	$bCached	boolean
+	 *	@param	$arrExtra	array
+	 *	@return	array
+	 */
 	public function GetVDataArray
 	(
 		$nErrorId,
@@ -179,9 +240,17 @@ class CVData
 		return $arrRet;
 	}
 
-	//
-	//	get json encoded string in virtual data format
-	//
+	/**
+	 *	get json encoded string in virtual data format
+	 *
+	 *	@param	$nErrorId	int
+	 *	@param	$sErrorDesc	string
+	 *	@param	$arrVData	array
+	 *	@param	$sVersion	string
+	 *	@param	$bCached	boolean
+	 *	@param	$arrExtra	array
+	 *	@return	string
+	 */
 	public function GetVDataString
 	(
 		$nErrorId,
@@ -217,9 +286,18 @@ class CVData
 		return $sRet;
 	}
 
-	//
-	//	get response object instance contains json encoded string in virtual data format
-	//
+	/**
+	 *	get response object instance contains json encoded string in virtual data format
+	 *
+	 *	@param	$nErrorId	int
+	 *	@param	$sErrorDesc	string
+	 *	@param	$arrVData	array
+	 *	@param	$sVersion	string
+	 *	@param	$bCached	boolean
+	 *	@param	$arrExtra	array
+	 *	@param 	$nHttpStatus	int
+	 *	@return	\Symfony\Component\HttpFoundation\Response
+	 */
 	public function GetVDataResponse
 	(
 		$nErrorId,
@@ -286,9 +364,12 @@ class CVData
 		return $cResponse;
 	}
 
-	//
-	//	if the variable being evaluated is a valid json in virtual data format ?
-	//
+	/**
+	 *	if the variable being evaluated is a valid json in virtual data format ?
+	 *
+	 *	@param	$arrJson	array
+	 *	@return	boolean
+	 */
 	public function IsValidVData( $arrJson )
 	{
 		return ( is_array( $arrJson ) &&
@@ -300,9 +381,12 @@ class CVData
 			is_array( $arrJson[ 'vdata' ] ) );
 	}
 
-	//
-	//	if the variable being evaluated is the reserved key
-	//
+	/**
+	 *	if the variable being evaluated is the reserved key
+	 *
+	 *	@param	$sKey	string
+	 *	@return	boolean
+	 */
 	public function IsReservedKey( $sKey )
 	{
 		$bRet	= false;
@@ -316,10 +400,11 @@ class CVData
 		return $bRet;
 	}
 
-
-	//
-	//	get default json in virtual data format
-	//
+	/**
+	 *	get default json in virtual data format
+	 *
+	 *	@return	array
+	 */
 	public function GetDefaultVDataJson()
 	{
 		return [
@@ -330,17 +415,22 @@ class CVData
 		];
 	}
 
-	//
-	//	get default service version
-	//
+	/**
+	 *	get default service version
+	 *
+	 *	@return	mixed
+	 */
 	public function GetDefaultVersion()
 	{
 		return self::SERVICE_DEFAULT_VERSION;
 	}
 
-	//
-	//	get content type of HTTP header
-	//
+	/**
+	 *	get content type of HTTP header
+	 *
+	 *	@param 	$sVersion	string
+	 *	@return	string
+	 */
 	public function GetContentTypeWithVersion( $sVersion )
 	{
 		return sprintf
@@ -351,17 +441,22 @@ class CVData
 		);
 	}
 
-	//
-	//	set domains for Cross-Origin Resource Sharing
-	//
+	/**
+	 *	set domains for Cross-Origin Resource Sharing
+	 *
+	 *	@param 	$arrDomains	array
+	 *	@return	boolean
+	 */
 	public function SetCorsDomains( $arrDomains )
 	{
 		return $this->m_cCors->SetCorsDomains( $arrDomains );
 	}
 
-	//
-	//	is allowed cors request
-	//
+	/**
+	 *	is allowed cors request
+	 *
+	 *	@return	boolean
+	 */
 	public function IsAllowedCorsRequest()
 	{
 		return $this->m_cCors->IsAllowedCorsRequest();
