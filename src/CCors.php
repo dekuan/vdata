@@ -124,47 +124,58 @@ class CCors
 		$sRet	= '';
 
 		//	...
-		if ( is_array( $_SERVER ) &&
-			array_key_exists( 'HTTP_REFERER', $_SERVER ) )
+		if ( is_array( $_SERVER ) )
 		{
-			$sReferer = $_SERVER[ 'HTTP_REFERER' ];
-			if ( is_string( $sReferer ) &&
-				strlen( $sReferer ) > 0 )
+			if ( array_key_exists( 'HTTP_REFERER', $_SERVER ) )
 			{
-				$arrUrl	= @ parse_url( $sReferer );
-				if ( is_array( $arrUrl ) &&
-					array_key_exists( 'scheme', $arrUrl ) &&
-					array_key_exists( 'host', $arrUrl ) )
+				$sReferer = $_SERVER[ 'HTTP_REFERER' ];
+				if ( is_string( $sReferer ) &&
+					strlen( $sReferer ) > 0 )
 				{
-					$sRefScheme	= $arrUrl['scheme'];
-					$sRefHost	= $arrUrl['host'];
-					$nPort		= array_key_exists( 'port', $arrUrl ) ? intval( $arrUrl[ 'port' ] ) : 80;
-
-					if ( is_string( $sRefScheme ) &&
-						is_string( $sRefHost ) )
+					$arrUrl	= @ parse_url( $sReferer );
+					if ( is_array( $arrUrl ) &&
+						array_key_exists( 'scheme', $arrUrl ) &&
+						array_key_exists( 'host', $arrUrl ) )
 					{
-						//
-						//	...
-						//
-						$sRet = sprintf
-						(
-							"%s%s%s",
+						$sRefScheme	= $arrUrl['scheme'];
+						$sRefHost	= $arrUrl['host'];
+						$nPort		= array_key_exists( 'port', $arrUrl ) ? intval( $arrUrl[ 'port' ] ) : 80;
+
+						if ( is_string( $sRefScheme ) &&
+							is_string( $sRefHost ) )
+						{
+							//
+							//	...
+							//
+							$sRet = sprintf
 							(
+								"%s%s%s",
+								(
 								$bWithScheme ?
 									sprintf( "%s://", $sRefScheme )
 									:
 									''
-							),
-							strtolower( trim( $sRefHost ) ),
-							(
+								),
+								strtolower( trim( $sRefHost ) ),
+								(
 								( $bWithScheme && 80 != $nPort ) ?
 									sprintf( ":%d", $nPort )
 									:
 									''
-							)
-						);
-						$sRet = rtrim( $sRet, "/\\" );
+								)
+							);
+							$sRet = rtrim( $sRet, "/\\" );
+						}
 					}
+				}
+			}
+			else if ( array_key_exists( 'HTTP_ORIGIN', $_SERVER ) )
+			{
+				$sOrigin = $_SERVER[ 'HTTP_ORIGIN' ];
+				if ( is_string( $sOrigin ) &&
+					strlen( $sOrigin ) > 0 )
+				{
+					$sRet = rtrim( $sOrigin, "/\\" );
 				}
 			}
 		}
