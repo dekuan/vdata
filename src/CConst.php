@@ -48,7 +48,7 @@ class CConst
 	//
 	//	App type
 	//
-	const APP_TYPE_UNKNOWN		= -1;	//	unknown
+	const APP_TYPE_UNKNOWN		= 0;	//	unknown
 	const APP_TYPE_APP		= 1;	//	app
 	const APP_TYPE_WEB		= 2;	//	web
 
