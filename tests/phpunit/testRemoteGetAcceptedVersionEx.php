@@ -1,30 +1,13 @@
 <?php
 
-@ ini_set( 'date.timezone', 'Etc/GMT＋0' );
-@ date_default_timezone_set( 'Etc/GMT＋0' );
-
-@ ini_set( 'display_errors',	'on' );
-@ ini_set( 'max_execution_time',	'60' );
-@ ini_set( 'max_input_time',	'0' );
-@ ini_set( 'memory_limit',	'512M' );
-
-//	mb 环境定义
-mb_internal_encoding( "UTF-8" );
-
-//	Turn on output buffering
-ob_start();
+namespace dekuan\vdata;
 
 
-require_once( __DIR__ . "/../../vendor/autoload.php");
-require_once( __DIR__ . "/../../src/CConst.php" );
-require_once( __DIR__ . "/../../src/CRemote.php");
-
-
-use dekuan\vdata\CRemote;
-
-
-
-class CTestForGetAcceptedVersionEx extends PHPUnit_Framework_TestCase
+/***
+ *	Class testRemoteGetAcceptedVersionEx
+ *	@package dekuan\vdata
+ */
+class testRemoteGetAcceptedVersionEx extends \PHPUnit\Framework\TestCase
 {
 	public function testNow()
 	{

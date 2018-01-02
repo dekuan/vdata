@@ -1,12 +1,13 @@
 <?php
 
-require_once __DIR__ . '/../../src/CRemote.php';
-require_once __DIR__ . '/../../src/CConst.php';
-require_once __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
+namespace dekuan\vdata;
 
 
-
-class TestGetParamAll extends PHPUnit_Framework_TestCase
+/***
+ *	Class testRemoteGetParamAll
+ *	@package dekuan\vdata
+ */
+class testRemoteGetParamAll extends \PHPUnit\Framework\TestCase
 {
 	private $m_arrInput =
 		[

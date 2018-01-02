@@ -2,8 +2,10 @@
 
 namespace dekuan\vdata;
 
-/**
- *      CConst
+
+/***
+ *	Class CConst
+ *	@package dekuan\vdata
  */
 class CConst
 {
@@ -41,6 +43,14 @@ class CConst
 	const SOURCE_WAP		= 3;	//	WAP
 	const SOURCE_PC			= 4;	//	PC
 	const SOURCE_MGR_SYSTEM		= 30;	//	user from product management system
+
+
+	//
+	//	App type
+	//
+	const APP_TYPE_UNKNOWN		= -1;	//	unknown
+	const APP_TYPE_APP		= 1;	//	app
+	const APP_TYPE_WEB		= 2;	//	web
 
 
 	//
@@ -108,7 +118,7 @@ class CConst
 	const ERROR_JSON_VDATA			= -100304;	//	error json.vdata
 
 	//
-	//	public parameters
+	//	errors of client common parameters
 	//
 	const ERROR_PUBPARAM_SOURCE		= -100401;	//	error - source
 	const ERROR_PUBPARAM_APP_ID		= -100402;	//	error - app id of client/caller
@@ -140,6 +150,15 @@ class CConst
 				self::SOURCE_MGR_SYSTEM == $nVal	//	management system
 			));
 	}
+	static function IsValidAppType( $nVal )
+	{
+		return ( is_numeric( $nVal ) &&
+			(
+				self::APP_TYPE_APP == $nVal ||		//	app
+				self::APP_TYPE_WEB == $nVal		//	web
+			));
+	}
+
 }
 
 ?>

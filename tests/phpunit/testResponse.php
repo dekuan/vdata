@@ -1,27 +1,21 @@
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
-require __DIR__ . '/../../src/CConst.php';
-require __DIR__ . '/../../src/CCors.php';
-require __DIR__ . '/../../src/CVData.php';
-require __DIR__ . '/../../src/CRequest.php';
-require __DIR__ . '/../../src/CResponse.php';
+namespace dekuan\vdata;
+
+
 
 use dekuan\vdata\CConst;
 use dekuan\vdata\CRequest;
 use dekuan\vdata\CResponse;
 
 
-
-/**
- * Created by PhpStorm.
- * User: xing
- * Date: 9/6/16
- * Time: 8:17 PM
+/***
+ *	Class testResponse
+ *	@package dekuan\vdata
  */
-class TestResponse extends PHPUnit_Framework_TestCase
+class testResponse extends \PHPUnit\Framework\TestCase
 {
+
 	public function testVDataArray()
 	{
 		$cResponse	= CResponse::GetInstance();
