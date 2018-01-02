@@ -1,13 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../../vendor/dekuan/delib/src/CLib.php';
+namespace dekuan\vdata;
 
-require_once __DIR__ . '/../../src/CConst.php';
-require_once __DIR__ . '/../../src/CCors.php';
-require_once __DIR__ . '/../../src/CVData.php';
-require_once __DIR__ . '/../../src/CRequest.php';
-require_once __DIR__ . '/../../src/CResponse.php';
 
 
 use dekuan\vdata\CConst;
@@ -15,15 +9,11 @@ use dekuan\vdata\CRequest;
 use dekuan\delib\CLib;
 
 
-
-
-/**
- * Created by PhpStorm.
- * User: xing
- * Date: 02/11/2016
- * Time: 12:09 PM
+/***
+ *	Class testRequestRaw
+ *	@package dekuan\vdata
  */
-class TestRequestRaw extends PHPUnit_Framework_TestCase
+class testRequestRaw extends \PHPUnit\Framework\TestCase
 {
 	public function testRawRequest()
 	{

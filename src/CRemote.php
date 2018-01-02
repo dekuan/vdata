@@ -6,13 +6,15 @@ use dekuan\vdata\CConst;
 use dekuan\delib\CLib;
 
 
-/**
- *      CRemote
+
+/***
+ *	Class CRemote
+ *	@package dekuan\vdata
  */
 class CRemote
 {
 	//
-	//      common status
+	//	client common parameters
 	//
 	const PARAM_SOURCE			= "sr";
 	const PARAM_APP_ID			= "apid";		//	app id of client/caller
