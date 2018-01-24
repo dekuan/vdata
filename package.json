@@ -32,13 +32,13 @@
 	],
 	"dependencies"	:
 	{
-		"jquery": "^1.11.3"
+		"jquery": ">=1.0"
 	},
 	"devDependencies" :
 	{
 		"mocha": "^2.4.5",
 		"chai": "^3.5.0",
-		"jquery": "^1.11.3"
+		"jquery": ">=1.0"
 	},
 	"ignore" :
 	[
