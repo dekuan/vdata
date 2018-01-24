@@ -353,9 +353,10 @@ class CVData
 			//$cResponse->headers->set( 'Access-Control-Allow-Origin', '*' );
 			$cResponse->headers->set( 'Access-Control-Allow-Origin', $this->m_cCors->GetRefererHost( true ) );
 			$cResponse->headers->set( 'Access-Control-Allow-Credentials', 'true' );
+			$cResponse->headers->set( 'Access-Control-Allow-Headers', 'Content-Type,Accept' );
+			$cResponse->headers->set( 'Access-Control-Allow-Methods', 'POST,GET,OPTIONS,PUT,DELETE' );
 			//$cResponse->headers->set( 'Access-Control-Allow-Headers', '*' );
 			//$cResponse->headers->set( 'Access-Control-Max-Age', 60 );
-			//$cResponse->headers->set( 'Access-Control-Allow-Methods', 'POST' );
 		}
 
 		//
