@@ -32,9 +32,9 @@ class CRemote
 	const PARAM_SYSTEM_TIMEZONE		= "stz";		//	系统时区，单位为：分钟
 
 
-	//
-	//	tools
-	//
+	/**
+	 *	@return string
+	 */
 	static function GetAcceptedVersionEx()
 	{
 		$sRet = '';
@@ -95,10 +95,11 @@ class CRemote
 	}
 
 
-	//
-	//	public parameters
-	//
-	static function GetSource( $arrInput )
+	/**
+	 *	@param	array	$arrInput
+	 *	@return int|mixed|string
+	 */
+	static function GetSource( $arrInput = null )
 	{
 		//
 		//	arrInput	- Input::get()
@@ -111,61 +112,129 @@ class CRemote
 		return $nSource;
 	}
 
-	static function GetAppID( $arrInput )
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetAppID( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_APP_ID );
 	}
-	static function GetAppName( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetAppName( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_APP_NAME );
 	}
-	static function GetAppVersion( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetAppVersion( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_APP_VERSION );
 	}
-	static function GetAppChannel( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetAppChannel( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_APP_CHANNEL );
 	}
-	static function GetSystemVersion( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetSystemVersion( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_SYSTEM_VERSION );
 	}
-	static function GetPhoneModel( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetPhoneModel( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_PHONE_MODEL );
 	}
-	static function GetScreenResolution( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetScreenResolution( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_SCREEN_RESOLUTION );
 	}
-	static function GetMobileOperator( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetMobileOperator( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_MOBILE_OPERATOR );
 	}
-	static function GetIMEI( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetIMEI( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_IMEI );
 	}
-	static function GetNetStatus( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetNetStatus( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_NET_STATUS );
 	}
-	static function GetMacAddress( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetMacAddress( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_MAC_ADDRESS );
 	}
-	static function GetSystemLanguage( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetSystemLanguage( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_SYSTEM_LANGUAGE );
 	}
-	static function GetSystemTimezone( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return mixed|string
+	 */
+	static function GetSystemTimezone( $arrInput = null )
 	{
 		return self::GetParam( $arrInput, self::PARAM_SYSTEM_TIMEZONE );
 	}
 
-	//
-	static function GetParamAll( $arrInput )
+
+	/**
+	 *	@param	array	$arrInput
+	 *	@return array
+	 */
+	static function GetParamAll( $arrInput = null )
 	{
 		return
 		[
@@ -187,7 +256,12 @@ class CRemote
 	}
 
 
-	//	...
+	/**
+	 *	@param	array	$arrInput
+	 *	@param	string	$sKey
+	 *	@param	string	$vDefault
+	 *	@return mixed|string
+	 */
 	static function GetParam( $arrInput, $sKey, $vDefault = '' )
 	{
 		if ( ! CLib::IsExistingString( $sKey, true ) )
@@ -216,5 +290,3 @@ class CRemote
 		return $vRet;
 	}
 }
-
-?>

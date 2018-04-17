@@ -30,6 +30,7 @@ class testRemoteGetParamAll extends \PHPUnit\Framework\TestCase
 	{
 		echo "\r\ntestGetParamAll\r\n";
 
+		print_r( \dekuan\vdata\CRemote::GetParamAll() );
 		print_r( \dekuan\vdata\CRemote::GetParamAll( $this->m_arrInput ) );
 	}
 }
