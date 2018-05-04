@@ -455,6 +455,19 @@ class CRequest extends CVData
 			curl_setopt( $oCUrl, CURLOPT_HTTP200ALIASES, [ 500 ] );
 
 			//
+			//	set TCP keep alive
+			//
+			//	enable TCP keep-alive for this transfer
+			curl_setopt( $oCUrl, CURLOPT_TCP_KEEPALIVE, 1 );
+ 
+			//	keep-alive idle time to 120 seconds
+			curl_setopt( $oCUrl, CURLOPT_TCP_KEEPIDLE, 120 );
+
+			//	interval time between keep-alive probes: 60 seconds
+			curl_setopt( $oCUrl, CURLOPT_TCP_KEEPINTVL, 60 );
+
+
+			//
 			//	set http headers
 			//
 			$arrHttpHeader	= $this->_GetHeadersList();
