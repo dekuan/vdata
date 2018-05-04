@@ -25,7 +25,7 @@ class testRequestRaw extends \PHPUnit\Framework\TestCase
 		(
 			[
 				'method'	=> 'GET',
-				'url'		=> "http://127.0.0.1:9916",
+				'url'		=> "http://www.baidu.com/",
 				'headers'	=>
 					[
 						'X-Application-Id'	=> '99999-88888',
